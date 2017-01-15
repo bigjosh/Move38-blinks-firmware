@@ -71,7 +71,7 @@ extern volatile uint32_t modeStart;
 typedef enum {
 	sleep,
 	running,
-	recieving,
+	//recieving,
 	transmitting
 } MODE;
 

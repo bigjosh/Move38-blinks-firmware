@@ -678,28 +678,6 @@ ISR(PCINT0_vect){
 				}
 			}
 		}
-	}else if( 0 /*mode == 20 /* recieving */){
-		//modeStart = timer;
-
-		/*
-		if(((prevVals^vals)&(1<<progDir))){//programming pin has changed
-			if(timer-oldTime > (3*PULSE_WIDTH)/2){//an edge we care about
-				if(timer-oldTime > 4*PULSE_WIDTH){//first bit. use for sync
-					bitsRcvd = 0;
-				}
-				oldTime = timer;
-				if(bitsRcvd<8){
-					uint8_t bit = ((vals&(1<<progDir))>>progDir);
-					msgNum |= bit<<(bitsRcvd%8);
-					bitsRcvd++;
-				}else	if(bitsRcvd<datLen*8+8){
-					uint8_t bit = ((vals&(1<<progDir))>>progDir);
-					comBuf[bitsRcvd/8-1] |= bit<<(bitsRcvd%8);
-					bitsRcvd++;
-				}
-			}
-		}
-		*/
 	}
 
 	//prevVals = vals;
