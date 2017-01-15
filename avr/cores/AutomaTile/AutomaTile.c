@@ -19,7 +19,7 @@
 
 MODE mode = running;
 
-volatile int16_t holdoff = 2000;//for temporarily preventing click outputs
+volatile uint16_t holdoff = 2000;//for temporarily preventing click outputs
 static volatile uint8_t click = 0;//becomes non-zero when a click is detected
 static volatile uint8_t sync = 0;//becomes non-zero when synchronization pulses need to be sent out
 static volatile uint8_t state = 0;//current state of tile
@@ -228,7 +228,7 @@ void setColorRGB(const uint8_t r, const uint8_t g, const uint8_t b){
 }
 
 void setColor(const uint8_t color[3]){
-	setColorRGB(outColor.r, outColor.g, outColor.b);
+	setColorRGB( color.r, color.g, color.b);
 }
 
 

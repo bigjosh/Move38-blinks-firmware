@@ -56,7 +56,7 @@ void setMicOn();
 void setMicOff();
 
 #define PULSE_WIDTH 8
-extern volatile int16_t holdoff;
+extern volatile uint16_t holdoff;
 //extern uint8_t outColor[3];
 extern volatile uint8_t wake;
 

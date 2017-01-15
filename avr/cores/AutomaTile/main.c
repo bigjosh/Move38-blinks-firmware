@@ -8,10 +8,6 @@
 
 uint32_t prevTimer;
 const rgb black = {0x00, 0x00, 0x00};
-const rgb transmitColor = {0xff, 0x55, 0x00};
-const rgb recieveColor = {0x00, 0xff, 0x55};
-
-static uint8_t seqNum = 0;//Sequence number used to prevent circular retransmission of data
 
 int main(void) {
 	tileSetup();
@@ -48,7 +44,7 @@ int main(void) {
 
 			loop();
 
-		}else if( mode==transmitting){
+		}else if(mode==transmitting){
 
 			static rgb on = {127,127,127};
 			static rgb off = {0,0,0};
