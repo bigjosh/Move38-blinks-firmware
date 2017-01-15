@@ -68,10 +68,13 @@ extern volatile uint8_t msgNum;
 extern volatile uint16_t bitsRcvd;
 extern volatile uint32_t modeStart;
 
+typedef enum {
 	sleep,
 	running,
 	recieving,
 	transmitting
+} MODE;
 
+extern MODE mode;
 
 #endif /* AUTOMATILE_H_ */

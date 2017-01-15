@@ -662,7 +662,7 @@ ISR(PCINT0_vect){
 					if(pulseCount[i]>=4){//There have been 4 quick pulses. Enter programming mode.
 						click = 0;
 						sync = 0;
-						mode = recieving;
+						// mode = recieving;
 						progDir = i;
 						int j;
 						for(j = 0; j < datLen; j++){//zero out buffer
@@ -678,7 +678,7 @@ ISR(PCINT0_vect){
 				}
 			}
 		}
-	}else if(mode == recieving){
+	}else if( 0 /*mode == 20 /* recieving */){
 		//modeStart = timer;
 
 		/*
