@@ -7,6 +7,8 @@
  *  by Jonathan Bobrow
  *  01.10.2017
  */
+
+ #include <util/delay.h>
  
 // colors arranged to travel the farthest in transition between colors
 int colors[7][3] = {{204,0,0},        // Red
@@ -21,11 +23,16 @@ int numColors = 7;
 int index = 0;
 
 void setup() {
-   setButtonCallback(buttonPressed);
+   // setButtonCallback(buttonPressed);
    setColorRGB(255, 0, 0);
 }
 
 void loop() {
+
+  if(PINB & BUTTON) {
+    _delay_ms(100);   // Debounce
+    buttonPressed();
+  }
 }
 
 void buttonPressed() {

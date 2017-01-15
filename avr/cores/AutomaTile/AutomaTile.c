@@ -9,34 +9,36 @@
 #include <avr/interrupt.h>
 #include <avr/cpufunc.h>
 #include <avr/sleep.h>
+#include <util/delay.h>
 
 #include "Pins.h"
 #include "Inits.h"
 #include "AutomaTile.h"
 #include "color.h"
+#include "APA102C.h"
 
 MODE mode = running;
 
 volatile int16_t holdoff = 2000;//for temporarily preventing click outputs
-volatile static uint8_t click = 0;//becomes non-zero when a click is detected
-volatile static uint8_t sync = 0;//becomes non-zero when synchronization pulses need to be sent out
-volatile static uint8_t state = 0;//current state of tile
-volatile static uint32_t timer = 0;//.1 ms timer tick
-volatile static uint32_t times[6][4];//ring buffer for holding leading  detection edge times for the phototransistors
-volatile static uint8_t timeBuf[6];//ring buffer indices
-volatile static uint8_t soundEn = 1; //if true, react to sound
+static volatile uint8_t click = 0;//becomes non-zero when a click is detected
+static volatile uint8_t sync = 0;//becomes non-zero when synchronization pulses need to be sent out
+static volatile uint8_t state = 0;//current state of tile
+static volatile uint32_t timer = 0;//.1 ms timer tick
+static volatile uint32_t times[6][4];//ring buffer for holding detection edge times for the phototransistors
+static volatile uint8_t timeBuf[6];//ring buffer indices
+static volatile uint8_t soundEn = 1; //if true, react to sound		// TODO: Delete
 
 // Pin mapping to arrange pins correctly on board
 const uint8_t pinMap[6] = {0,1,2,5,4,3};
 
 uint32_t timeout = 20;
-volatile static uint32_t startTime = 0;
+static volatile uint32_t startTime = 0;
 volatile uint32_t sleepTimer = 0;
-volatile static uint32_t powerDownTimer = 0;
+static volatile uint32_t powerDownTimer = 0;
 volatile uint8_t wake = 0;
 
-volatile static uint16_t longPressTimer = 0;
-volatile static uint16_t longPressTime = 1000;//1 second default
+static volatile uint16_t longPressTimer = 0;
+static volatile uint16_t longPressTime = 1000;//1 second default
 
 volatile uint8_t progDir = 0;//direction to pay attention to during programming. Set to whichever side put the module into program mode.
 volatile uint8_t* comBuf;//buffer for holding communicated messages when programming rules (oversized)
@@ -218,15 +220,17 @@ cb_func longButtonCB = emptyCB;
 volatile uint16_t timerCBcount = 0;
 volatile uint16_t timerCBtime = UINT16_MAX;
 
-void setColor(const uint8_t color[3]){
-	setColorRGB(outColor.r, outColor.g, outColor.b);
-}
 
 void setColorRGB(const uint8_t r, const uint8_t g, const uint8_t b){
 	outColor.r = r;
 	outColor.g = g;
 	outColor.b = b;
 }
+
+void setColor(const uint8_t color[3]){
+	setColorRGB(outColor.r, outColor.g, outColor.b);
+}
+
 
 /*
  * Fade from current RGB color to RGB parameter, ms is the duration for the fade transition
@@ -460,11 +464,13 @@ void setLongButtonCallbackTimer(uint16_t ms){
 	longPressTime = ms;
 }
 
+
 void setTimerCallback(cb_func cb, uint16_t t){
 	timerCB = cb;
 	timerCBcount = 0;
 	timerCBtime = t;
 }
+
 
 void setTimerCallbackTime(uint16_t t){
 	timerCBcount = 0;
@@ -602,7 +608,6 @@ ISR(TIM0_COMPA_vect){
 		}else if (wake == 3){
 			DDRB |= IR;//Set direction out
 			PORTB |= IR;//Set pin on
-			sendColor(LEDCLK, LEDDAT, wakeColor);
 			startTime = timer;
 			wake = 4;
 		}else if(wake == 4){
@@ -616,7 +621,7 @@ ISR(TIM0_COMPA_vect){
 				wake=7;
 			}
 		}else if(wake == 7){
-			enAD();
+			//enAD();							// TODO: Delete
 			powerDownTimer = timer;
 			sleepTimer = timer;
 			holdoff=500;
