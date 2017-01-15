@@ -149,7 +149,7 @@ bool isAlone(void){
 	getNeighborStates(neighbors);
 	uint8_t i;
 	for(i=0; i<TILE_SIDES; i++){
-		if (neighbors[TILE_SIDES]){
+		if (neighbors[i]){
 			alone =  false;
 			break;
 		}
@@ -228,7 +228,7 @@ void setColorRGB(const uint8_t r, const uint8_t g, const uint8_t b){
 }
 
 void setColor(const uint8_t color[3]){
-	setColorRGB( color.r, color.g, color.b);
+	setColorRGB( color[0], color[1] , color[2] );
 }
 
 
