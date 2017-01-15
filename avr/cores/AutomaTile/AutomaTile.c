@@ -685,7 +685,9 @@ ISR(PCINT0_vect){
 			}
 		}
 	}else if(mode == recieving){
-		modeStart = timer;
+		//modeStart = timer;
+
+		/*
 		if(((prevVals^vals)&(1<<progDir))){//programming pin has changed
 			if(timer-oldTime > (3*PULSE_WIDTH)/2){//an edge we care about
 				if(timer-oldTime > 4*PULSE_WIDTH){//first bit. use for sync
@@ -703,9 +705,10 @@ ISR(PCINT0_vect){
 				}
 			}
 		}
+		*/
 	}
 
-	prevVals = vals;
+	//prevVals = vals;
 }
 //ADC conversion complete interrupt
 //Calculates a running median for zeroing out signal
