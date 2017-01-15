@@ -68,4 +68,10 @@ extern volatile uint8_t msgNum;
 extern volatile uint16_t bitsRcvd;
 extern volatile uint32_t modeStart;
 
+	sleep,
+	running,
+	recieving,
+	transmitting
+
+
 #endif /* AUTOMATILE_H_ */

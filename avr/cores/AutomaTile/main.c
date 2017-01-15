@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include "color.h"
 #include "APA102C.h"
+#include "AutomaTile.h"
 
 uint32_t prevTimer;
 const rgb black = {0x00, 0x00, 0x00};

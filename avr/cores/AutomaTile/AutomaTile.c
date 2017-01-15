@@ -15,6 +15,8 @@
 #include "AutomaTile.h"
 #include "color.h"
 
+MODE mode = running;
+
 volatile int16_t holdoff = 2000;//for temporarily preventing click outputs
 volatile static uint8_t click = 0;//becomes non-zero when a click is detected
 volatile static uint8_t sync = 0;//becomes non-zero when synchronization pulses need to be sent out
@@ -46,14 +48,6 @@ volatile uint32_t modeStart = 0;
 const rgb dark = {0x00, 0x00, 0x00};
 const rgb wakeColor = {0xAA, 0x55, 0x00};
 volatile rgb outColor = {0x00, 0x00, 0xFF};
-
-enum MODE {
-	sleep,
-	running,
-	recieving,
-	transmitting
-};
-enum MODE mode = running;
 
 enum LEDMODE {
 	stillMode,
