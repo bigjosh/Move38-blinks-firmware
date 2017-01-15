@@ -4,6 +4,8 @@
 #include "APA102C.h"
 #include "AutomaTile.h"
 
+#include <avr/delay.h>
+
 uint32_t prevTimer;
 const rgb black = {0x00, 0x00, 0x00};
 const rgb transmitColor = {0xff, 0x55, 0x00};
@@ -46,6 +48,16 @@ int main(void) {
 
 			loop();
 		}else if(mode==recieving){
+
+			/*
+
+			while (1) {
+				sendColor(LEDCLK, LEDDAT, recieveColor);
+				_delay_ms(300);
+				sendColor(LEDCLK, LEDDAT , black );
+				_delay_ms(300);
+
+			}			
 			//disable A/D
 			disAD();
 			//set photo transistor interrupt to only trigger on specific direction
@@ -56,10 +68,12 @@ int main(void) {
 			modeStart = getTimer();
 			while(mode==recieving){//stay in this mode until instructed to leave or timeout
 				uint32_t diff = getTimer()-modeStart;
-				if(diff>20*PULSE_WIDTH){//Been too long without any new data*/
+				if(diff>20*PULSE_WIDTH){//Been too long without any new data
 					mode = transmitting;
 				}
 			}
+
+			*/
 		}else if(mode==transmitting){
 			//disable Phototransistor Interrupt
 			setDirNone();
