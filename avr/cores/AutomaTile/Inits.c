@@ -18,33 +18,6 @@ void initIO(){//Set up pin directions, pull up/downs, overrides, pin change inte
 	PRR = (1<<PRTIM1)|(1<<PRUSI);//Disable unused modules
 }
 
-void initAD(){//Set up all the necessary parameters for analog to digital conversion
-	DIDR0 = MIC; //Disable digital buffering on microphone pin
-	ADMUX = (0 << REFS1) | (0 << REFS0) // VCC ref
-		| (0 << MUX5) | (0 << MUX4) | (0 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0); // (PA7 = MIC)
-	ADCSRA = (1 << ADEN) // enable
-		| (1 << ADATE) | (1 << ADIE) // auto trigger and interrupt enable
-		| (1 << ADPS2) | (1 << ADPS1) | (0 << ADPS0); // prescaler /8
-	ADCSRB = (0 << BIN) // single ended mode
-		| (1 << ADLAR) // left align result to easily read only 8 MSB
-		| (0 << ADTS2) | (0 << ADTS1) | (0 << ADTS0); // auto trigger off of A/D interrupt (free running mode)
-	// start free running operation
-	ADCSRA |= (1 << ADSC);
-}
-
-void disAD(){//disable microphone when not in use
-	ADCSRA = (0 << ADEN) // disable
-	| (1 << ADATE) | (1 << ADIE) // auto trigger and interrupt enable
-	| (1 << ADPS2) | (1 << ADPS1) | (0 << ADPS0); // prescaler /8
-}
-
-void enAD(){//re-enable microphone
-	ADCSRA = (1 << ADEN) // ensable
-	| (1 << ADATE) | (1 << ADIE) // auto trigger and interrupt enable
-	| (1 << ADPS2) | (1 << ADPS1) | (0 << ADPS0); // prescaler /8
-	// start free running operation
-	ADCSRA |= (1 << ADSC);
-}
 
 void setDir(uint8_t dir){//make tile only listen to one phototransistor
 	PCMSK0 = 1<<dir;

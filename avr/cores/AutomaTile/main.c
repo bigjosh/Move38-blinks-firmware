@@ -38,7 +38,6 @@ int main(void) {
 			if(timeout>0){
 				if(prevTimer-sleepTimer>1000*timeout){
 					mode = sleep;
-					disAD();
 					DDRB &= ~IR;//Set direction in
 					PORTB &= ~IR;//Set pin tristated
 					sendColor(LEDCLK, LEDDAT, black);
