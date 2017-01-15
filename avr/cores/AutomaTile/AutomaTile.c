@@ -47,6 +47,9 @@ uint8_t datLen = 0;
 volatile uint16_t bitsRcvd = 0;//tracking number of bits received for retransmission/avoiding overflow
 volatile uint32_t modeStart = 0;
 
+// Supress all the printfs to save mem and whatnot!
+#define printf(x,y)
+
 const rgb dark = {0x00, 0x00, 0x00};
 const rgb wakeColor = {0xAA, 0x55, 0x00};
 volatile rgb outColor = {0x00, 0x00, 0xFF};
@@ -195,15 +198,34 @@ void tileSetup(void){
 	//Initialization routines
 	initIO();
 	setPort(&PORTB);
-	sendColor(LEDCLK,LEDDAT,dark);
+
+	// Signal to the world that we are newly alive. 
+	// If you see 3 blinks, then a reset happened...
+
+	static rgb blue = {0,0,255};
+
+	uint8_t i;
+	
+	i=3;
+
+	while( i--) {
+		sendColor(LEDCLK,LEDDAT,blue);	
+		_delay_ms(200);
+		sendColor(LEDCLK,LEDDAT,dark);
+		_delay_ms(200);
+	}	
+
+
 	sei();
 	//initAD();
 	initTimer();
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN);
 	sleep_enable();
 	//Set up timing ring buffers
-	uint8_t i;
-	for(i = 0; i<6; i++){
+
+	i=6;
+
+	while (--i) {
 		timeBuf[i]=0;
 	}
 	mode = running;
