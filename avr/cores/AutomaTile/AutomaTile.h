@@ -43,6 +43,11 @@ void pulse(const uint16_t ms); // phase
 //void pulse(int ms, int min, int max); // phase w/ low and high brightness
 //void pulse(int ms, Colors[n] c); // phased pulse between colors (depends on fadeTo)
 
+/*
+ * This controls the led output mode and its logic
+ */
+void updateLed(void);
+
 void setState(uint8_t state);
 uint8_t getState(void);
 void setStepCallback(cb_func cb);

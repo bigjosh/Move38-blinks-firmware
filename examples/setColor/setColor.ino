@@ -16,7 +16,7 @@ void loop() {
       for(uint8_t k =0; k<255; k++){
         setColorRGB(i, j, k);
         // Not sure why delay has been commented from Arduino.h
-        _delay_ms(10);
+        _delay_ms(100);
       }
     }
   }

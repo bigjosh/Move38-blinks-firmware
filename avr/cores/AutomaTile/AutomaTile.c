@@ -231,7 +231,6 @@ void setColor(const uint8_t color[3]){
 	setColorRGB( color[0], color[1] , color[2] );
 }
 
-
 /*
  * Fade from current RGB color to RGB parameter, ms is the duration for the fade transition
  *
@@ -499,19 +498,6 @@ void sendStep(){
 	clickCB();
 }
 
-void setSharedDataBuffer(uint8_t* comb,uint8_t* datb , uint8_t len){
-	comBuf = comb;
-	datBuf = datb;
-	datLen = len;
-}
-
-uint8_t getSharedData(uint8_t i){
-	if(i>=datLen){
-		return 0;
-	}
-
-	return datBuf[i];
-}
 
 //Timer interrupt occurs every 1 ms
 //Increments timer and controls IR LEDs to keep their timing consistent
