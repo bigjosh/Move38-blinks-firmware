@@ -50,3 +50,6 @@ Temporary Items
 #Artifacts
 debug/
 release/
+Debug/
+Release/
+
