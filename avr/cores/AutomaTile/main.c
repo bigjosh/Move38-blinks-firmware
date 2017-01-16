@@ -2,7 +2,6 @@
 #include <Arduino.h>
 #include "color.h"
 #include "APA102C.h"
-#include "AutomaTile.h"
 
 #include <util/delay.h>
 

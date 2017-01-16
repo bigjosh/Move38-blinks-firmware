@@ -30,7 +30,7 @@
 #include <avr/interrupt.h>
 
 #include "binary.h"
-//#include "AutomaTile.h"
+#include "AutomaTile.h"
 
 #ifdef __cplusplus
 extern "C"{

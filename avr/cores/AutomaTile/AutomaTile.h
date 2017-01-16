@@ -15,6 +15,8 @@
 #define TILE_SIDES	6
 #define LED_REFRESHING_PERIOD  32  	// Led refreshing period is 32ms (check main.c)
 
+#define F_CPU   (1000000)           // Currently running on the internal 8Mhz oscillator with clock_div8
+
 typedef void (*cb_func)(void);
 
 void tileSetup(void);

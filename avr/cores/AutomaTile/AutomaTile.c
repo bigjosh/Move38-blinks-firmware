@@ -9,13 +9,15 @@
 #include <avr/interrupt.h>
 #include <avr/cpufunc.h>
 #include <avr/sleep.h>
-#include <util/delay.h>
 
 #include "Pins.h"
 #include "Inits.h"
 #include "AutomaTile.h"
 #include "color.h"
 #include "APA102C.h"
+
+#include <util/delay.h>             // Depends on _F_CPU defined in Automatile.h
+
 
 MODE mode = running;
 
@@ -53,15 +55,6 @@ volatile uint32_t modeStart = 0;
 const rgb dark = {0x00, 0x00, 0x00};
 const rgb wakeColor = {0xAA, 0x55, 0x00};
 volatile rgb outColor = {0x00, 0x00, 0xFF};
-
-
-enum MODE {
-	sleep,
-	running,
-	//recieving,
-	transmitting
-};
-enum MODE mode = running;
 
 enum LEDMODE {
 	stillMode,
