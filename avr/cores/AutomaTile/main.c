@@ -2,13 +2,12 @@
 #include <Arduino.h>
 #include "color.h"
 #include "APA102C.h"
+#include "AutomaTile.h"
+
+#include <util/delay.h>
 
 uint32_t prevTimer;
 const rgb black = {0x00, 0x00, 0x00};
-const rgb transmitColor = {0xff, 0x55, 0x00};
-const rgb recieveColor = {0x00, 0xff, 0x55};
-
-static uint8_t seqNum = 0;//Sequence number used to prevent circular retransmission of data
 
 int main(void) {
 	tileSetup();
@@ -29,12 +28,12 @@ int main(void) {
 			if(t<=32 && t+diff>=32){
 				updateLed();
 			}
+
 			prevTimer = getTimer();
 
 			if(timeout>0){
 				if(prevTimer-sleepTimer>1000*timeout){
 					mode = sleep;
-					disAD();
 					DDRB &= ~IR;//Set direction in
 					PORTB &= ~IR;//Set pin tristated
 					sendColor(LEDCLK, LEDDAT, black);
@@ -43,7 +42,6 @@ int main(void) {
 				}
 			}
 
-			loop();		
 		}
 	}
 }

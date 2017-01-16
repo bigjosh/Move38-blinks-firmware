@@ -43,6 +43,11 @@ void pulse(const uint16_t ms); // phase
 //void pulse(int ms, int min, int max); // phase w/ low and high brightness
 //void pulse(int ms, Colors[n] c); // phased pulse between colors (depends on fadeTo)
 
+/*
+ * This controls the led output mode and its logic
+ */
+void updateLed(void);
+
 void setState(uint8_t state);
 uint8_t getState(void);
 void setStepCallback(cb_func cb);
@@ -56,7 +61,7 @@ void setMicOn();
 void setMicOff();
 
 #define PULSE_WIDTH 8
-extern volatile int16_t holdoff;
+extern volatile uint16_t holdoff;
 //extern uint8_t outColor[3];
 extern volatile uint8_t wake;
 
@@ -67,5 +72,14 @@ extern uint8_t datLen;
 extern volatile uint8_t msgNum;
 extern volatile uint16_t bitsRcvd;
 extern volatile uint32_t modeStart;
+
+typedef enum {
+	sleep,
+	running,
+	//recieving,
+	transmitting
+} MODE;
+
+extern MODE mode;
 
 #endif /* AUTOMATILE_H_ */

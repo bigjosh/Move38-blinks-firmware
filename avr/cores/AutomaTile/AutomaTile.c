@@ -9,32 +9,36 @@
 #include <avr/interrupt.h>
 #include <avr/cpufunc.h>
 #include <avr/sleep.h>
+#include <util/delay.h>
 
 #include "Pins.h"
 #include "Inits.h"
 #include "AutomaTile.h"
 #include "color.h"
+#include "APA102C.h"
 
-volatile int16_t holdoff = 2000;//for temporarily preventing click outputs
-volatile static uint8_t click = 0;//becomes non-zero when a click is detected
-volatile static uint8_t sync = 0;//becomes non-zero when synchronization pulses need to be sent out
-volatile static uint8_t state = 0;//current state of tile
-volatile static uint32_t timer = 0;//.1 ms timer tick
-volatile static uint32_t times[6][4];//ring buffer for holding leading  detection edge times for the phototransistors
-volatile static uint8_t timeBuf[6];//ring buffer indices
-volatile static uint8_t soundEn = 1; //if true, react to sound
+MODE mode = running;
+
+volatile uint16_t holdoff = 2000;//for temporarily preventing click outputs
+static volatile uint8_t click = 0;//becomes non-zero when a click is detected
+static volatile uint8_t sync = 0;//becomes non-zero when synchronization pulses need to be sent out
+static volatile uint8_t state = 0;//current state of tile
+static volatile uint32_t timer = 0;//.1 ms timer tick
+static volatile uint32_t times[6][4];//ring buffer for holding detection edge times for the phototransistors
+static volatile uint8_t timeBuf[6];//ring buffer indices
+static volatile uint8_t soundEn = 1; //if true, react to sound		// TODO: Delete
 
 // Pin mapping to arrange pins correctly on board
 const uint8_t pinMap[6] = {0,1,2,5,4,3};
 
 uint32_t timeout = 20;
-volatile static uint32_t startTime = 0;
+static volatile uint32_t startTime = 0;
 volatile uint32_t sleepTimer = 0;
-volatile static uint32_t powerDownTimer = 0;
+static volatile uint32_t powerDownTimer = 0;
 volatile uint8_t wake = 0;
 
-volatile static uint16_t longPressTimer = 0;
-volatile static uint16_t longPressTime = 1000;//1 second default
+static volatile uint16_t longPressTimer = 0;
+static volatile uint16_t longPressTime = 1000;//1 second default
 
 volatile uint8_t progDir = 0;//direction to pay attention to during programming. Set to whichever side put the module into program mode.
 volatile uint8_t* comBuf;//buffer for holding communicated messages when programming rules (oversized)
@@ -43,9 +47,13 @@ uint8_t datLen = 0;
 volatile uint16_t bitsRcvd = 0;//tracking number of bits received for retransmission/avoiding overflow
 volatile uint32_t modeStart = 0;
 
+// Supress all the printfs to save mem and whatnot!
+#define printf(x,y)
+
 const rgb dark = {0x00, 0x00, 0x00};
 const rgb wakeColor = {0xAA, 0x55, 0x00};
 volatile rgb outColor = {0x00, 0x00, 0xFF};
+
 
 enum MODE {
 	sleep,
@@ -153,7 +161,7 @@ bool isAlone(void){
 	getNeighborStates(neighbors);
 	uint8_t i;
 	for(i=0; i<TILE_SIDES; i++){
-		if (neighbors[TILE_SIDES]){
+		if (neighbors[i]){
 			alone =  false;
 			break;
 		}
@@ -199,15 +207,34 @@ void tileSetup(void){
 	//Initialization routines
 	initIO();
 	setPort(&PORTB);
-	sendColor(LEDCLK,LEDDAT,dark);
+
+	// Signal to the world that we are newly alive. 
+	// If you see 3 blinks, then a reset happened...
+
+	static rgb blue = {0,0,255};
+
+	uint8_t i;
+	
+	i=3;
+
+	while( i--) {
+		sendColor(LEDCLK,LEDDAT,blue);	
+		_delay_ms(200);
+		sendColor(LEDCLK,LEDDAT,dark);
+		_delay_ms(200);
+	}	
+
+
 	sei();
 	//initAD();
 	initTimer();
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN);
 	sleep_enable();
 	//Set up timing ring buffers
-	uint8_t i;
-	for(i = 0; i<6; i++){
+
+	i=6;
+
+	while (--i) {
 		timeBuf[i]=0;
 	}
 	mode = running;
@@ -224,14 +251,15 @@ cb_func longButtonCB = emptyCB;
 volatile uint16_t timerCBcount = 0;
 volatile uint16_t timerCBtime = UINT16_MAX;
 
-void setColor(const uint8_t color[3]){
-	setColorRGB(outColor.r, outColor.g, outColor.b);
-}
 
 void setColorRGB(const uint8_t r, const uint8_t g, const uint8_t b){
 	outColor.r = r;
 	outColor.g = g;
 	outColor.b = b;
+}
+
+void setColor(const uint8_t color[3]){
+	setColorRGB( color[0], color[1] , color[2] );
 }
 
 /*
@@ -466,11 +494,13 @@ void setLongButtonCallbackTimer(uint16_t ms){
 	longPressTime = ms;
 }
 
+
 void setTimerCallback(cb_func cb, uint16_t t){
 	timerCB = cb;
 	timerCBcount = 0;
 	timerCBtime = t;
 }
+
 
 void setTimerCallbackTime(uint16_t t){
 	timerCBcount = 0;
@@ -499,19 +529,6 @@ void sendStep(){
 	clickCB();
 }
 
-void setSharedDataBuffer(uint8_t* comb,uint8_t* datb , uint8_t len){
-	comBuf = comb;
-	datBuf = datb;
-	datLen = len;
-}
-
-uint8_t getSharedData(uint8_t i){
-	if(i>=datLen){
-		return 0;
-	}
-
-	return datBuf[i];
-}
 
 //Timer interrupt occurs every 1 ms
 //Increments timer and controls IR LEDs to keep their timing consistent
@@ -622,7 +639,7 @@ ISR(TIM0_COMPA_vect){
 				wake=7;
 			}
 		}else if(wake == 7){
-			enAD();
+			//enAD();							// TODO: Delete
 			powerDownTimer = timer;
 			sleepTimer = timer;
 			holdoff=500;
@@ -667,7 +684,6 @@ ISR(PCINT0_vect){
 					if(pulseCount[i]>=4){//There have been 4 quick pulses. Enter programming mode.
 						click = 0;
 						sync = 0;
-						//	mode = recieving;  Do not enter reciving mode!
 					}
 				}else{//Normally timed pulse, process normally
 					pulseCount[i]=0;
@@ -679,51 +695,5 @@ ISR(PCINT0_vect){
 		}
 	}
 
-	prevVals = vals;
+	//prevVals = vals;
 }
-//ADC conversion complete interrupt
-//Calculates a running median for zeroing out signal
-//Then calculates a running median of deltas from the median to check for exceptional events
-//If a delta is very high compared to the median, a click is detected and click is set to non-0
-ISR(ADC_vect){
-	//Values saved for derivative calculation
-	static uint16_t median = 1<<15;
-	static uint16_t medDelta = 1<<5;
-
-	uint8_t adc;
-
-	adc = ADCH;// Record ADC value
-
-	//update running median. Error on high side.
-	//note that due to comparison, the median is scaled up by 2^8
-	if((adc<<8)<median){
-		median--;
-		}else{
-		median++;
-	}
-	uint16_t delta;
-	if(median > (adc<<8)){// Calculate delta
-		delta = (median>>8)-adc;
-		}else{
-		delta = adc-(median>>8);
-	}
-
-	//Update running delta median. Error on high side.
-	//note that due to comparison, the median is scaled up by 2^4=16
-	if((delta<<4)<medDelta && medDelta > 10){
-		medDelta--;
-		}else{
-		medDelta++;
-	}
-
-	if(holdoff == 0){//holdoff can be set elsewhere to disable click being set for a period of time
-		if(medDelta < delta){//check for click. as the median delta is scaled up by 16, an exceptional event is needed.
-			if(soundEn){
-				click = delta;//Board triggered click as soon as it could (double steps)
-				sync = 3;
-				sleepTimer = timer;
-			}
-		}
-	}
-}
-

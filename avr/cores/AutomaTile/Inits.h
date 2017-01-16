@@ -10,9 +10,6 @@
 #include "Pins.h"
 
 void initIO(void);
-void initAD(void);
-void disAD(void);
-void enAD(void);
 void initTimer(void);
 void setDir(uint8_t dir);
 void setDirNone(void);
