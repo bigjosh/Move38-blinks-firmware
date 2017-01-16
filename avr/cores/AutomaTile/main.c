@@ -36,7 +36,7 @@ int main(void) {
 				if(prevTimer-sleepTimer>1000*timeout){
 					mode = sleep;
 					DDRB &= ~IR;//Set direction in
-					PORTB &= ~IR;//Set pin tristated
+					PORTB &= ~IR;//Set pin tristated					
 					sendColor(LEDCLK, LEDDAT, black);
 					PORTA |= POWER;//Set LED and Mic power pin high (off)
 					wake = 0;
@@ -44,7 +44,7 @@ int main(void) {
 			}
             
             loop();	
-
 		}
+
 	}
 }

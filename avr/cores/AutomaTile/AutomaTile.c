@@ -603,6 +603,7 @@ ISR(TIM0_COMPA_vect){
 			}
 		}
 	}else if(mode==sleep){
+
 		uint32_t diff = timer-powerDownTimer;
 		uint32_t startDiff = timer-startTime;
 		if(diff>500 && wake==0){
@@ -612,36 +613,49 @@ ISR(TIM0_COMPA_vect){
 			wake = 1;
 			sleepTimer = timer;
 		}
-		if(wake == 1){
-			startTime = timer;
-			PORTA &= ~POWER;
-			wake = 2;
-		}else if (wake == 2){
-			if(startDiff>250){
-				wake=3;
-			}
-		}else if (wake == 3){
-			DDRB |= IR;//Set direction out
-			PORTB |= IR;//Set pin on
-			sendColor(LEDCLK, LEDDAT, wakeColor);
-			startTime = timer;
-			wake = 4;
-		}else if(wake == 4){
-			PORTB &= !IR;
-			wake = 5;
-		}else if(wake == 5){
-			PORTB |= IR;
-			wake = 6;
-		}else if(wake == 6){
-			if(startDiff>500){
-				wake=7;
-			}
-		}else if(wake == 7){
-			//enAD();							// TODO: Delete
-			powerDownTimer = timer;
-			sleepTimer = timer;
-			holdoff=500;
-			mode = running;
+
+		switch (wake) {
+
+			case 1: 
+				startTime = timer;
+				PORTA &= ~POWER;
+				wake++;
+				break;
+
+			case 2:
+				if(startDiff>250){
+					wake++;
+				}
+				break; 
+
+			case 3:
+				DDRB |= IR;//Set direction out
+				PORTB |= IR;//Set pin on
+				sendColor(LEDCLK, LEDDAT, wakeColor);
+				startTime = timer;
+				wake++;
+				break;
+
+			case 4:
+				PORTB &= !IR;
+				wake++;
+				break;
+				
+			case 5:
+				PORTB |= IR;
+				break;
+
+			case 6:
+				if(startDiff>500){
+					wake++;
+				}
+
+			case 7:
+				powerDownTimer = timer;
+				sleepTimer = timer;
+				holdoff=500;
+				mode = running;
+				break;
 		}
 	}
 }
@@ -662,7 +676,6 @@ ISR(PCINT0_vect){
 	static uint8_t pulseCount[6]; //stores counted pulses for various actions
 	uint8_t vals = PINA & 0x3f; //mask out phototransistors
 	uint8_t newOn = vals & ~prevVals; //mask out previously on pins
-
 	if(mode == running){
 		powerDownTimer = timer;
 
