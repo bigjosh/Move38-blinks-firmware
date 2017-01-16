@@ -2,6 +2,7 @@
 #include "AutomaTile.h"
 #include "color.h"
 #include "APA102C.h"
+#include "Pins.h"       // TODO: This does not belong here... SendCOlor should be abstracted a layer up
 
 #include <util/delay.h>
 

@@ -15,52 +15,60 @@
 #define TILE_SIDES	6
 #define LED_REFRESHING_PERIOD  32  	// Led refreshing period is 32ms (check main.c)
 
-#define F_CPU   (1000000)           // Currently running on the internal 8Mhz oscillator with clock_div8
-
 typedef void (*cb_func)(void);
 
 void tileSetup(void);
 
-void getNeighborStates(uint8_t * result);
-uint8_t getNeighbor(const uint8_t neighbor);
-bool isAlone(void);
+/*
+**
+** All the following functions are seen by the Arduino envronment, so are defined in Arduino.h
+** rather than here, which is just for internal core firmware exposure.
+**
+*/
 
-void sendStep(void);
-uint32_t getTimer(void);
+//void getNeighborStates(uint8_t * result);
+//uint8_t getNeighbor(const uint8_t neighbor);
+//bool isAlone(void);
 
-void setColor(const uint8_t color[3]);
-void setColorRGB(const uint8_t r, const uint8_t g, const uint8_t b);
+//void sendStep(void);
+//uint32_t getTimer(void);
 
-void fadeTo(const uint8_t r, const uint8_t g, const uint8_t b, const uint16_t ms);
+//void setColor(const uint8_t color[3]);
+//void setColorRGB(const uint8_t r, const uint8_t g, const uint8_t b);
+
+//void fadeTo(const uint8_t r, const uint8_t g, const uint8_t b, const uint16_t ms);
 //void fadeTo(const Color c, uint8_t ms);
 //void fadeTo(const Color c, uint8_t ms);
 
-void blink(const uint16_t ms);
+//void blink(const uint16_t ms);
 //void blink(int ms, Color c); // defaults to on/off of this color
 //void blink(int ms, Color[n] c); // send array of colors to blink between
 //void blink(int ms, int min, int max); // low and high levels for blinking and the time between them
 //void blink(int ms, Color c, int min, int max); // low and high levels for blinking and the time between them
 
-void pulse(const uint16_t ms); // phase
+//void pulse(const uint16_t ms); // phase
 //void pulse(int ms, int min, int max); // phase w/ low and high brightness
 //void pulse(int ms, Colors[n] c); // phased pulse between colors (depends on fadeTo)
+
+
+//void setState(uint8_t state);
+//uint8_t getState(void);
+//void setStepCallback(cb_func cb);
+//void setLongButtonCallback(cb_func cb, uint16_t);
+//void setLongButtonCallbackTimer(uint16_t);
+//void setButtonCallback(cb_func cb);
+//void setTimerCallback(cb_func cb, uint16_t t);
+//void setTimerCallbackTime(uint16_t t);
+//void setTimeout(uint16_t seconds);
+//void setMicOn();
+//void setMicOff();
 
 /*
  * This controls the led output mode and its logic
  */
+
 void updateLed(void);
 
-void setState(uint8_t state);
-uint8_t getState(void);
-void setStepCallback(cb_func cb);
-void setLongButtonCallback(cb_func cb, uint16_t);
-void setLongButtonCallbackTimer(uint16_t);
-void setButtonCallback(cb_func cb);
-void setTimerCallback(cb_func cb, uint16_t t);
-void setTimerCallbackTime(uint16_t t);
-void setTimeout(uint16_t seconds);
-void setMicOn();
-void setMicOff();
 
 #define PULSE_WIDTH 8
 extern volatile uint16_t holdoff;
@@ -78,7 +86,6 @@ extern volatile uint32_t modeStart;
 typedef enum {
 	sleep,
 	running,
-	//recieving,
 	transmitting
 } MODE;
 

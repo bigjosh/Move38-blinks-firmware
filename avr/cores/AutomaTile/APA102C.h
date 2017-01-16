@@ -11,7 +11,7 @@
 #ifndef APA102C_H_
 #define APA102C_H_
 
-#include "color.h"
+//#include "color.h"
 
 void setPort(volatile uint8_t* port);
 void sendColor(uint8_t clkPin, uint8_t datPin,const rgb c);

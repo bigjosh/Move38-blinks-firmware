@@ -10,14 +10,17 @@
 #include <avr/cpufunc.h>
 #include <avr/sleep.h>
 
+
 #include "Pins.h"
 #include "Inits.h"
-#include "AutomaTile.h"
 #include "color.h"
 #include "APA102C.h"
 
+#include "Arduino.h"
+#include "AutomaTile.h"
 
-#include <util/delay.h>             // Depends on _F_CPU defined in Automatile.h
+
+//#include <util/delay.h>             // Depends on _F_CPU defined in Automatile.h
 
 
 MODE mode = running;
