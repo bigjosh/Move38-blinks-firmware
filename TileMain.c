@@ -8,7 +8,18 @@
 #include <avr/io.h>
 
 
-int main(void)
+void setup(void) {
+    
+    
+}
+
+void loop(void) {
+    
+}
+
+
+
+void tilemain(void)
 {
     /* Replace with your application code */
     while (1) 

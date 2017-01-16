@@ -29,8 +29,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#include "binary.h"
-#include "AutomaTile.h"
 
 #ifdef __cplusplus
 extern "C"{
@@ -242,11 +240,6 @@ void loop(void);
 #endif
 
 #ifdef __cplusplus
-#include "WCharacter.h"
-#include "WString.h"
-#if defined(HAVE_HWSERIAL0) && defined(HAVE_CDCSERIAL)
-#error "Targets with both UART0 and CDC serial not supported"
-#endif
 
 uint16_t makeWord(uint16_t w);
 uint16_t makeWord(byte h, byte l);
@@ -266,7 +259,5 @@ void randomSeed(unsigned int);
 long map(long, long, long, long, long);
 
 #endif
-
-#include "Pins.h"
 
 #endif

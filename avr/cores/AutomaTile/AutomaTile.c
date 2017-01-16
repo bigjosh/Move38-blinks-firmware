@@ -16,6 +16,7 @@
 #include "color.h"
 #include "APA102C.h"
 
+
 #include <util/delay.h>             // Depends on _F_CPU defined in Automatile.h
 
 
@@ -218,7 +219,6 @@ void tileSetup(void){
 	}	
 
 
-	sei();
 	//initAD();
 	initTimer();
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN);
@@ -231,6 +231,8 @@ void tileSetup(void){
 		timeBuf[i]=0;
 	}
 	mode = running;
+	sei();
+    
 }
 
 void emptyCB(void){

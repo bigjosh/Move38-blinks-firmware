@@ -1,5 +1,5 @@
-#include <AutomaTile.h>
-#include <Arduino.h>
+#include "Arduino.h"
+#include "AutomaTile.h"
 #include "color.h"
 #include "APA102C.h"
 
@@ -9,6 +9,7 @@ uint32_t prevTimer;
 const rgb black = {0x00, 0x00, 0x00};
 
 int main(void) {
+    
 	tileSetup();
 
 	setup();
@@ -40,6 +41,8 @@ int main(void) {
 					wake = 0;
 				}
 			}
+            
+            loop();	
 
 		}
 	}
