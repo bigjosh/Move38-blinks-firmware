@@ -11,10 +11,13 @@
 #ifndef APA102C_H_
 #define APA102C_H_
 
-//#include "color.h"
 
-void sendColor(uint8_t clkPin, uint8_t datPin,const rgb c);
+//bit bangs an SPI signal to the specified pins that generates the specified color and brightness
+void sendColorRGBW(uint8_t r, uint8_t g, uint8_t b , uint8_t brightness);
 
-void setPort(volatile uint8_t* port);           // TODO: THis is unused, but there are calls to it with no prototype that need to be dealt with
+
+//	Fixed brightness of 0xe0
+
+void sendColor(uint8_t r, uint8_t g, uint8_t b); 
 
 #endif /* APA102C_H_ */

@@ -81,6 +81,8 @@ void yield(void);
 #define interrupts() sei()
 #define noInterrupts() cli()
 
+#define F_CPU (1000000)                 // 8Mhz internal RC, with CLKDIV8 deividing it by 8
+
 #define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
 #define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )

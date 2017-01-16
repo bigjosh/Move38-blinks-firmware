@@ -5,19 +5,12 @@
 #ifndef COLOR_H_
 #define COLOR_H_
 
-#include <stdio.h>
-#include <stdint.h>
-
 // Delta error is the difference between and float and a rounded int value that is considered not valid
 #define DELTA_ERROR 38
-#define min(a,b) ((a)<(b)?(a):(b))
-#define max(a,b) ((a)>(b)?(a):(b))
-#define abs(x) ((x)>0?(x):-(x))
 
 // Direct values for full and half rotation for a wheel with a range of 127 values
 #define WHEEL_360	127
 #define WHEEL_180	63
-
 
 typedef struct {
     uint8_t r;       // percent

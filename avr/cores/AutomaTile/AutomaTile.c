@@ -13,6 +13,7 @@
 
 #include "Pins.h"
 #include "Inits.h"
+
 #include "color.h"
 #include "APA102C.h"
 
@@ -20,7 +21,7 @@
 #include "AutomaTile.h"
 
 
-//#include <util/delay.h>             // Depends on _F_CPU defined in Automatile.h
+#include <util/delay.h>             // Depends on _F_CPU defined in Automatile.h
 
 
 MODE mode = running;
@@ -52,9 +53,6 @@ volatile uint8_t* datBuf;//buffer for holding verified messages to be accessed b
 uint8_t datLen = 0;
 volatile uint16_t bitsRcvd = 0;//tracking number of bits received for retransmission/avoiding overflow
 volatile uint32_t modeStart = 0;
-
-// Supress all the printfs to save mem and whatnot!
-#define printf(x,y)
 
 const rgb dark = {0x00, 0x00, 0x00};
 const rgb wakeColor = {0xAA, 0x55, 0x00};
@@ -200,11 +198,17 @@ void  setMicOff(){
 	soundEn = 0;
 }*/
 
+
+void sendRgbColor( rgb color ) {
+    
+    sendColor( color.r , color.g, color.b );
+    
+}
+
 void tileSetup(void){
 	//Initialization routines
 	initIO();
-	setPort(&PORTB);
-
+    
 	// Signal to the world that we are newly alive. 
 	// If you see 3 blinks, then a reset happened...
 
@@ -215,9 +219,9 @@ void tileSetup(void){
 	i=3;
 
 	while( i--) {
-		sendColor(LEDCLK,LEDDAT,blue);	
+		sendRgbColor(blue);	
 		_delay_ms(200);
-		sendColor(LEDCLK,LEDDAT,dark);
+		sendRgbColor(dark);
 		_delay_ms(200);
 	}	
 
@@ -314,7 +318,7 @@ void fadeToColorAndReturn(const Color c, uint8_t ms){}*/
 void fadeUpdate(void) {
 	// Output current color
 	outColor = hsv2rgb(fading.currHSV);
-	sendColor(LEDCLK, LEDDAT, outColor);
+	sendRgbColor( outColor);
 	// Terminal bar
 	/*for (int i = 0; i < fading.currHSV.h; ++i) {
 		printf("#");
@@ -384,11 +388,11 @@ void blinkUpdate(void) {
 	if ((blinking.next-timer) > blinking.period) {
 		if (blinking.status) { // On to Off
 			//printf("OFF\n" );
-			sendColor(LEDCLK, LEDDAT, dark);
+			sendRgbColor( dark);
 			blinking.status = false;
 		} else {  // Off to On
 			//printf("ON\n");
-			sendColor(LEDCLK, LEDDAT, outColor);
+			sendRgbColor( outColor);
 			blinking.status = true;
 		}
 		blinking.next += blinking.period;  // Updating the next blinking time incrementing it by the blinking period in ms
@@ -435,7 +439,7 @@ void pulse(const uint16_t ms){
 
 void pulsingUpdate(void) {
 	outColor = hsv2rgb(pulsing.currHSV);
-	sendColor(LEDCLK, LEDDAT, outColor);
+	sendRgbColor( outColor);
 
 	if (pulsing.rampUp) { // pulsing is ramping up
 		if ((pulsing.currHSV.v + pulsing.increment) >= pulsing.max) {  // If HSV value next cycle will be bigger than the max value time to ramp down
@@ -461,7 +465,7 @@ void pulsingUpdate(void) {
 void updateLed(void) {
 	switch(ledMode){
 		case stillMode:
-			sendColor(LEDCLK, LEDDAT, outColor);
+			sendRgbColor( outColor);
 			break;
 		case fadeMode:
 			fadeUpdate();
@@ -631,7 +635,7 @@ ISR(TIM0_COMPA_vect){
 			case 3:
 				DDRB |= IR;//Set direction out
 				PORTB |= IR;//Set pin on
-				sendColor(LEDCLK, LEDDAT, wakeColor);
+				sendRgbColor( wakeColor);
 				startTime = timer;
 				wake++;
 				break;

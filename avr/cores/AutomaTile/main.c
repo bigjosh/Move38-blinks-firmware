@@ -37,7 +37,7 @@ int main(void) {
 					mode = sleep;
 					DDRB &= ~IR;//Set direction in
 					PORTB &= ~IR;//Set pin tristated					
-					sendColor(LEDCLK, LEDDAT, black);
+					sendRgbColor( black );
 					PORTA |= POWER;//Set LED and Mic power pin high (off)
 					wake = 0;
 				}

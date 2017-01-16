@@ -2,6 +2,8 @@
  * Color RGB to/from HSV
  */
 
+#include "Arduino.h"
+
 #include "color.h"
 
 rgb hsv2rgb(hsv in){

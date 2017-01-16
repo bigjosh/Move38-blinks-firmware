@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+
 #include "APA102C.h"
 
 #include "Pins.h"
@@ -37,18 +38,23 @@ static void sendByte( uint8_t data){
         bitmask >>= 1;               // Walk to next bit
     }
  }    
- 
-//bit bangs an SPI signal to the specified pins that generates the specified color 
-//	formatted for the APA102, provided as a byte array of R,G,B
-void sendColor(uint8_t clkPin, uint8_t datPin,const rgb c){
+
+void sendColorRGBW(uint8_t r, uint8_t g, uint8_t b , uint8_t brightness) {
 	//Start Frame
 	sendByte( 0x00);
 	sendByte( 0x00);
 	sendByte( 0x00);
 	sendByte( 0x00);
 	//Data
-	sendByte( 0xE1);//Set brightness to current to minimum TODO: Add setBrightness function (0xE1...0xFF)
-	sendByte( c.b);
-	sendByte( c.g);
-	sendByte( c.r);
+	sendByte( brightness);
+	sendByte( b);
+	sendByte( g);
+	sendByte( r);
+}    
+
+ 
+//bit bangs an SPI signal to the specified pins that generates the specified color 
+//	formatted for the APA102, provided as a byte array of R,G,B
+void sendColor(uint8_t r, uint8_t g, uint8_t b){
+    sendColorRGBW(r,g,b,0xE1);
 }
