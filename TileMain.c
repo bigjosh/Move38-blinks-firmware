@@ -6,8 +6,6 @@
  */ 
 
 #include <avr/io.h>
-//#include <Pins.h>
-#include <APA102C.h>
 
 #include <AutomaTile.h>
 #include <Arduino.h>

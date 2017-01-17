@@ -1,13 +1,10 @@
 #include "Arduino.h"
 #include "AutomaTile.h"
-#include "color.h"
 #include "APA102C.h"
-#include "Pins.h"       // TODO: This does not belong here... SendCOlor should be abstracted a layer up
 
 #include <util/delay.h>
 
 uint32_t prevTimer;
-const rgb black = {0x00, 0x00, 0x00};
 
 int main(void) {
     
@@ -27,7 +24,7 @@ int main(void) {
 			}
 			uint8_t t = prevTimer%64;
 			if(t<=32 && t+diff>=32){
-				updateLed();
+				//updateLed();
 			}
 
 			prevTimer = getTimer();

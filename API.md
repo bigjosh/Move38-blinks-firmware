@@ -51,7 +51,7 @@ void onStep() {
 The number of faces on each tile (these tiles are hexagons). 
 
 ```
-#define FACE_COUNT 6
+#define TILE_SIDES 6
 ```
 
 ###Blink global variables###

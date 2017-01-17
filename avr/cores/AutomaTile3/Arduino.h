@@ -197,12 +197,9 @@ int atexit(void (*func)()) __attribute__((weak));
 #endif
 
 
-
-
-
 /*
 **
-** Public Tile interface funtions below.
+** Public Tile interface functions below.
 **
 */
 
@@ -214,24 +211,6 @@ bool isAlone(void);
 
 void sendStep(void);
 uint32_t getTimer(void);
-
-void setColor(const uint8_t color[3]);
-void setColorRGB(const uint8_t r, const uint8_t g, const uint8_t b);
-
-void fadeTo(const uint8_t r, const uint8_t g, const uint8_t b, const uint16_t ms);
-//void fadeTo(const Color c, uint8_t ms);
-//void fadeTo(const Color c, uint8_t ms);
-
-void blink(const uint16_t ms);
-//void blink(int ms, Color c); // defaults to on/off of this color
-//void blink(int ms, Color[n] c); // send array of colors to blink between
-//void blink(int ms, int min, int max); // low and high levels for blinking and the time between them
-//void blink(int ms, Color c, int min, int max); // low and high levels for blinking and the time between them
-
-void pulse(const uint16_t ms); // phase
-//void pulse(int ms, int min, int max); // phase w/ low and high brightness
-//void pulse(int ms, Colors[n] c); // phased pulse between colors (depends on fadeTo)
-
 
 void setState(uint8_t state);
 uint8_t getState(void);

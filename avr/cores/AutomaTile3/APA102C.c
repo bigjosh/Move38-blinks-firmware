@@ -12,8 +12,7 @@
 
 #include "Pins.h"
 
-void setPort(volatile uint8_t* port){
-}
+#define FIX_BRIGHTNESS (0xe0)           // TODO: Do we even need to change this?
 
 //bit bangs an SPI signal to the specified pins of the given data
 static void sendByte( uint8_t data){
@@ -39,22 +38,16 @@ static void sendByte( uint8_t data){
     }
  }    
 
-void sendColorRGBW(uint8_t r, uint8_t g, uint8_t b , uint8_t brightness) {
+void sendColor(uint8_t r, uint8_t g, uint8_t b ) {
 	//Start Frame
 	sendByte( 0x00);
 	sendByte( 0x00);
 	sendByte( 0x00);
 	sendByte( 0x00);
 	//Data
-	sendByte( brightness);
+	sendByte( FIX_BRIGHTNESS );
 	sendByte( b);
 	sendByte( g);
 	sendByte( r);
 }    
 
- 
-//bit bangs an SPI signal to the specified pins that generates the specified color 
-//	formatted for the APA102, provided as a byte array of R,G,B
-void sendColor(uint8_t r, uint8_t g, uint8_t b){
-    sendColorRGBW(r,g,b,0xE1);
-}
