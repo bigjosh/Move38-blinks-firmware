@@ -91,7 +91,7 @@ void setup() {
 	bedTime=getFrameCount()+SLEEP_TIMEOUT;    
 }
 
-loopReturn loop() {
+runState loop() {
 
 	if neighborChanged() {
 		setColor( getNeighbor(0) , getNeighbor(1) , getNeighbor(1) );    
@@ -102,10 +102,10 @@ loopReturn loop() {
 	} 
 
 	if (frameCount()>bedTime) {
-		return( LOOP_SLEEP );
+		return( RS_SLEEP );
 	}
 
-	return(LOOP_FRAME);
+	return(RS_FRAME);
 }
 
 
@@ -129,27 +129,28 @@ The number of faces on each tile (these tiles are hexagons).
 #define TILE_SIDES 6
 ```
 
-**LOOP_SLEEP**
+####Run States
+
+You return one of these `runState`s from your `loop()` to indicate when you want to be called again next.  
+
+**RS_SLEEP**
 
 Returning this from loop() puts the tile into low power sleep. Display LED is de-powered. We can only wake based on received data or a button state change, but there may be latency on the order of 100's of ms to wake up on received data.
 
 On waking, LED is set to black.    
 
-**LOOP_IDLE**
+**RS_IDLE**
 
 Returning this from loop() puts the tile into medium power sleep. Next loop call will happen immediately on received data or button change or next frame time. 
 
 
-**LOOP_FRAME**
+**RS_FRAME**
 
 next frame
 
-**LOOP_INSTANT**
+**RS_INSTANT**
 
 loop() immediately called again. 
-
-
-###Blink global variables###
 
 
 ###Blink callbacks###
@@ -167,7 +168,7 @@ void setup() {
 
 **loop**
 ```c
-void loop() {
+newRunState loop() {
 	// main event loop. 
 	// The value you return from your loop() function controls when your loop()
 	// will get called again. You will *alwyas* get called if a button state
