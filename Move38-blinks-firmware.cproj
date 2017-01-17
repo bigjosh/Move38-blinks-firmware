@@ -119,49 +119,49 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="avr\cores\AutomaTile\APA102C.c">
+    <Compile Include="avr\cores\AutomaTile3\APA102C.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\APA102C.h">
+    <Compile Include="avr\cores\AutomaTile3\APA102C.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\Arduino.h">
+    <Compile Include="avr\cores\AutomaTile3\Arduino.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\AutomaTile.c">
+    <Compile Include="avr\cores\AutomaTile3\AutomaTile.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\AutomaTile.h">
+    <Compile Include="avr\cores\AutomaTile3\AutomaTile.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\binary.h">
+    <Compile Include="avr\cores\AutomaTile3\binary.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\color.c">
+    <Compile Include="avr\cores\AutomaTile3\color.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\color.h">
+    <Compile Include="avr\cores\AutomaTile3\color.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\Inits.c">
+    <Compile Include="avr\cores\AutomaTile3\Inits.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\Inits.h">
+    <Compile Include="avr\cores\AutomaTile3\Inits.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\main.c">
+    <Compile Include="avr\cores\AutomaTile3\main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\new.h">
+    <Compile Include="avr\cores\AutomaTile3\new.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\Pins.h">
+    <Compile Include="avr\cores\AutomaTile3\Pins.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\WCharacter.h">
+    <Compile Include="avr\cores\AutomaTile3\WCharacter.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="avr\cores\AutomaTile\WString.h">
+    <Compile Include="avr\cores\AutomaTile3\WString.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="TileMain.c">
@@ -171,16 +171,16 @@
   <ItemGroup>
     <Folder Include="avr\" />
     <Folder Include="avr\cores\" />
-    <Folder Include="avr\cores\AutomaTile\" />
+    <Folder Include="avr\cores\AutomaTile3" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="avr\cores\AutomaTile\new.cpp">
+    <None Include="avr\cores\AutomaTile3\new.cpp">
       <SubType>compile</SubType>
     </None>
-    <None Include="avr\cores\AutomaTile\WMath.cpp">
+    <None Include="avr\cores\AutomaTile3\WMath.cpp">
       <SubType>compile</SubType>
     </None>
-    <None Include="avr\cores\AutomaTile\WString.cpp">
+    <None Include="avr\cores\AutomaTile3\WString.cpp">
       <SubType>compile</SubType>
     </None>
   </ItemGroup>
