@@ -19,18 +19,6 @@ void initIO(){//Set up pin directions, pull up/downs, overrides, pin change inte
 }
 
 
-void setDir(uint8_t dir){//make tile only listen to one phototransistor
-	PCMSK0 = 1<<dir;
-}
-
-void setDirNone(){
-	PCMSK0 = 0;
-}
-
-void setDirAll(){//make tile listen to all phototransistors
-	PCMSK0 = 0x3F;
-}
-
 void initTimer(){//Set up global .1ms timer used for various protocols
 	TCCR0A = (0<<COM0A1)|(0<<COM0A0)//OC0A Disconnected
 		|(0<<COM0B1)|(0<<COM0B0)//OC0B Disconnected

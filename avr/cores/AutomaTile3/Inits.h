@@ -11,7 +11,4 @@
 
 void initIO(void);
 void initTimer(void);
-void setDir(uint8_t dir);
-void setDirNone(void);
-void setDirAll(void);
 #endif /* INITS_H_ */
