@@ -174,7 +174,7 @@ void loop() {
 ```
 
 
-###Blink methods###
+###Blink inspection methods###
 
 These are methods that the firmware provides for you to call to find out about the current blink state. These are only updated between calls to loop() to provide a coherent snapshot of a single moment.  
 
@@ -222,7 +222,6 @@ Returns true if the indicated adjacent tile has received a valid data message si
 bool getNeighborChangedFlag( uint8_t side );
 ```
 
-
 **reset**
 
 Reset updates...
@@ -235,6 +234,42 @@ Since the framecount runs out after about 90 minutes, it is good practice to cal
 
 ```c
 void reset(void);
+```
+
+###Blink convenience test methods###
+
+These do not add any functionality to the inspection methods, they just give a fast and easy shortcut to doing common tests. 
+
+Each test method only indicates if the tested property has *changed* since the previous frame. 
+
+**buttonChanged**
+
+```c
+bool buttonChanged();
+```
+
+**neighborDataChanged**
+
+Returns TRUE if *different* data was received from any neighbor since last frame. 
+
+```c
+bool anyNeighborDataChanged();
+```
+
+**neighborTimestampChanged**
+
+Returns TRUE if any neighbor received valid data since last frame, even if that data was the same as the previously received data. 
+
+```c
+bool anyNeighborTimestampChanged();
+```
+
+**getNeighborChangedFlag**
+
+Returns true if the indicated adjacent tile has received a valid data message since the last time loop was called.  
+
+```c
+bool neighborTimestampChangedFlag( uint8_t side );
 ```
 
 
