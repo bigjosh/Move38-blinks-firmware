@@ -146,7 +146,7 @@ next frame
 
 **LOOP_INSTANT**
 
-loop() immedeately called again. 
+loop() immediately called again. 
 
 
 ###Blink global variables###
@@ -169,7 +169,11 @@ void setup() {
 ```c
 void loop() {
 	// main event loop. 
-	// Returning from loop() causes tile to go into deep sleep
+	// The value you return from your loop() function controls when your loop()
+	// will get called again. You will *alwyas* get called if a button state
+	// changes or valid data is recieved, but you can also optionally get
+	// called at periodic intervals, or immedeately if you have something urgent
+	// to do. 
 }
 ```
 
@@ -211,7 +215,7 @@ Returns the frame count when the most recently data message from the indicated a
 All timestamps are cleared to 0 on powerup and on waking from sleep. 
 
 ```c
-uint16_t getNeighborTimeStamp( uint8_t side );
+frameCount getNeighborTimeStamp( uint8_t side );
 ```
 
 **getNeighborChangedFlag**
@@ -289,7 +293,4 @@ void setColor(uint8_t r, uint8_t g, uint8_t b);
 // instantly changes the color of the RGB LED to the values passed
 ```
 
-###Power Management
-
-Returning the value LOOP_SLEEP from loop() puts the tile into a lowest power sleep mode where it can only be awoken by a button change or valid recieved message.
 
