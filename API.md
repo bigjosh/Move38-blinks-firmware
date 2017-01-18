@@ -10,7 +10,7 @@ You can, however, use this interface to talk directly to the hardware if you wan
 
 ##Model
 
-This API is based on an event-driven synchronous message loop. All of your functionality goes into your `loop()` function, which is called repeatedly by the firmware. Each time you are called, you look around to see what changes, you update your internal state and issue any outward actions, and then return to wait for the next call into your `loop()`.
+This API is based on an event-driven synchronous message loop. All of your functionality goes into your `loop()` function, which is called repeatedly by the firmware. Each time you are called, you look around to see what changed, you update your internal state and issue any outward actions, and then return to wait for the next call into your `loop()`.
 
 This model has the big advantage that while inside the `loop()`, your view of the world is completely static. Nothing can change until the next time you return from `loop()` so there are no issues with background updates or locking or race conditions. The world changes, you react to those changes, repeat.   
 
@@ -129,9 +129,25 @@ The number of faces on each tile (these tiles are hexagons).
 #define TILE_SIDES 6
 ```
 
+###Blink types###
+
+
 ####Run States
 
 You return one of these `runState`s from your `loop()` to indicate when you want to be called again next.  
+
+```c
+
+typedef enum {
+ 
+	RS_SLEEP,
+	RS_IDLE,
+	RS_FRAME,
+	RS_INSTANT,
+
+} RunStateType;
+```
+
 
 **RS_SLEEP**
 
@@ -153,6 +169,35 @@ next frame
 loop() immediately called again. 
 
 
+####Button States
+
+Returned by `getButton()`.
+
+```c
+
+typedef enum {
+
+	BUTTON_DOWN,
+	BUTTON_UP 
+
+} ButtonStateType;
+```
+
+####Frame Count Type
+
+All timekeeping is done in frames. A frame is the shortest amount of time a color can be displayed on the LED. 
+
+The system timer counts off in frames, so you can tell how much time has past be subtracting a previous framecount from a new one. 
+
+Internally frame counts are stored as 16 bit ints, and there are 30 frames per second, so the frame counter does overflow after about 30 minutes. 
+
+You can reset the frame counter back to zeor by calling `reset()`, which is a good idea to do more often than every 30 minutes so it does not overflow.  
+
+```c
+typedef uint16_t FrameCountType;
+```
+
+
 ###Blink callbacks###
 
 These are methods that you implement and are called by the firmware to let you act on state changes. 
@@ -168,7 +213,7 @@ void setup() {
 
 **loop**
 ```c
-newRunState loop() {
+RunStateType loop() {
 	// main event loop. 
 	// The value you return from your loop() function controls when your loop()
 	// will get called again. You will *alwyas* get called if a button state
@@ -190,7 +235,7 @@ Get the current frame count value.
 Frame count starts at zero on power up and on waking from sleep, or after `reset()`.
 
 ```c
-frameCount getFrame(void);
+FrameCountType getFrame(void);
 ```
 
 **getButton**
@@ -198,7 +243,7 @@ frameCount getFrame(void);
 returns BUTTON_DOWN or BUTTON_UP.
 
 ```c
-bool getButton();
+ButtonStateType getButton();
 ```
 
 **getNeighborData**
@@ -216,29 +261,7 @@ Returns the frame count when the most recently data message from the indicated a
 All timestamps are cleared to 0 on powerup and on waking from sleep. 
 
 ```c
-frameCount getNeighborTimeStamp( uint8_t side );
-```
-
-**getNeighborChangedFlag**
-
-Returns true if the indicated adjacent tile has received a valid data message since the last time loop was called.  
-
-```c
-bool getNeighborChangedFlag( uint8_t side );
-```
-
-**reset**
-
-Reset updates...
-
-* current framecount to 0
-* all tile timestamps for all neighbors to 0
-* all change flags to false
- 
-Since the framecount runs out after about 90 minutes, it is good practice to call `reset()` at the end of an game.  
-
-```c
-void reset(void);
+FrameCountType getNeighborTimeStamp( uint8_t side );
 ```
 
 ###Blink convenience test methods###
@@ -292,6 +315,20 @@ void transmit(uint8_t value);
 ```c
 void setColor(uint8_t r, uint8_t g, uint8_t b);
 // instantly changes the color of the RGB LED to the values passed
+```
+
+**reset**
+
+Reset updates...
+
+* current framecount to 0
+* all tile timestamps for all neighbors to 0
+* all change flags to false
+ 
+Since the framecount rolls over after about 90 minutes, it is good practice to call `reset()` at the end of a game.  
+
+```c
+void reset(void);
 ```
 
 
