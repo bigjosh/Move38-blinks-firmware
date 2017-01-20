@@ -21,7 +21,7 @@ volatile static uint8_t sync = 0;//becomes non-zero when synchronization pulses 
 volatile static uint8_t state = 0;//current state of tile
 volatile static uint32_t timer = 0;//.1 ms timer tick
 volatile static uint32_t times[6][4];//ring buffer for holding leading  detection edge times for the phototransistors
-volatile static uint8_t timeBuf[6];//ring buffer indices
+volatile static uint8_t timeBuf[6];//ring buffer indices. For each pin, this array holds index into times[pin] of the timestamp of the most recent rising edge
 volatile static uint8_t soundEn = 1; //if true, react to sound
 
 // Pin mapping to arrange pins correctly on board
@@ -53,7 +53,7 @@ volatile rgb outColor = {0x00, 0x00, 0xFF};
 enum MODE {
 	sleep,
 	running,
-	//recieving,
+	recieving,
 	transmitting
 };
 enum MODE mode = running;
@@ -129,7 +129,7 @@ void getNeighborStates(uint8_t * result){
 				diffs[1] >>= 3;
 				diffs[2] >>= 3;
 				//checking if any two of the differences are equal and using a value from the equal pair
-				if(diffs[0] == diffs[1] &&diffs[0] == diffs[2]){
+				if(diffs[0] == diffs[1] && diffs[0] == diffs[2]){
 					result[pinMap[i]] = (uint8_t) diffs[0];
 					oldData[i]=result[i];
 				}else{//too much variation reuse old value
@@ -270,7 +270,6 @@ void fadeTo(const uint8_t r, const uint8_t g, const uint8_t b, const uint16_t ms
 
 	fading.dt = ms/LED_REFRESHING_PERIOD;
 	fading.fadeCntr = fading.dt;
-	//printf("Led Updates Per Period = %d\n", fading.fadeCntr);
 	fading.error = 0;
 
 	fading.dh = abs(fading.fromHSV.h - fading.toHSV.h);
@@ -367,7 +366,7 @@ void blink(const uint16_t ms){
 	ledMode = blinkMode;
 	blinking.status = false;
 	blinking.period = ms;
-	blinking.next = ms + geTimer();
+	blinking.next = ms + getTimer();
 }
 
 void blinkUpdate(void) {
@@ -564,6 +563,12 @@ ISR(TIM0_COMPA_vect){
 				PORTB &= ~IR;
 			}
 		}else{
+            
+            // If we get here...
+            // Sync==0
+            // IRCount != 5
+            // IRcount < (uint8_t)(sendState*8+4)
+            
 			DDRB &= ~IR;//Set direction in
 			PORTB &= ~IR;//Set pin tristated
 
@@ -598,74 +603,85 @@ ISR(TIM0_COMPA_vect){
 				}
 			}
 
-			if(IRcount<5){
+			if(IRcount<5) {
 
-			if(!holdoff){ // This is a good detection we are not debouncing!
-				if(PINB & BUTTON){// Button pressed (Button active high)
-					if(!pressed){  // Making sure buttonPressed is not called over and over while the button is pressed
-						buttonPressed();
-					}
-					pressed = true;
-					multipleClicks = true;  // Activate multiple cicks detections
-					sleepTimer = timer;
-					powerDownTimer = timer;
+    			if(!holdoff){ // This is a good detection we are not debouncing!
+                    
+				    if(PINB & BUTTON){// Button pressed (Button active high)
+    					if(!pressed){  // Making sure buttonPressed is not called over and over while the button is pressed
+						    buttonPressed();
+					    }
+					    pressed = true;
+					    multipleClicks = true;  // Activate multiple cicks detections
+					    sleepTimer = timer;
+					    powerDownTimer = timer;
 
-					if(longPressTimer>=longPressTime){
-						// This will keep triggering the button long pressed function every time
-						// the button keeps being pressed over long press time
-						buttonLongPressed();
-						longPressTimer = 0;
-					}
-				// Getting read of the holdoff fixed multiple clicks issues
-				// Legacy library had 200ms debounce, which is a really high value, my guess
-				// to help mask the main sleep detection issue.
-				// Its hard to tell for me (Luis) what is the real debounce time when holdoff = 0,
-				// at least 2ms but also its dependant on IRcount
-				holdoff = 0;
+					    if(longPressTimer>=longPressTime){
+    						// This will keep triggering the button long pressed function every time
+						    // the button keeps being pressed over long press time
+						    buttonLongPressed();
+						    longPressTimer = 0;
+					    }
+                        
+				        // Getting read of the holdoff fixed multiple clicks issues
+        				// Legacy library had 200ms debounce, which is a really high value, my guess
+				        // to help mask the main sleep detection issue.
+				        // Its hard to tell for me (Luis) what is the real debounce time when holdoff = 0,
+				        // at least 2ms but also its dependant on IRcount
+                        
+                        
+        				holdoff = 0;
 
-				} else {  // Button not pressed
-					if(pressed){
-						buttonReleased();  // Button Released callback
-						numClicks++;
-						clickDetectionTimer = 0;
-						sleepTimer = timer;
-						powerDownTimer = timer;
-						pressed = false;
-						longPressTimer = 0;  // Reset lpt counter after button has been released
-					}
-				}
-			} else {
+        			} else {  // Button not pressed
+                            
+					    if(pressed){
+                                
+						    buttonReleased();  // Button Released callback
+        					numClicks++;
+						    clickDetectionTimer = 0;
+						    sleepTimer = timer;
+						    powerDownTimer = timer;
+						    pressed = false;
+						    longPressTimer = 0;  // Reset lpt counter after button has been released
+					    }
+			        }
+                    
+			    } else {        // holdoff!=0
+                        
+                    // Nothing...
 
-			}
+			    }
 
-				/*if(PINB & BUTTON){//Button active high
-					if(!holdoff){//initial press
-						buttonPressed();
-						sleepTimer = timer;
-						powerDownTimer = timer;
-						longPressTimer = 0;
-						pressed = true;
-					}else{//during long press wait
-						if(longPressTimer>=longPressTime){
-							buttonLongPressed();
-						}
-					}
-					holdoff = 3;//debounce and hold state until released
-				}else{//Button not down
-					if(pressed && !holdoff){
-						buttonReleased();  // Button Released callback
-						sleepTimer = timer;
-						powerDownTimer = timer;
-						pressed = false;
-						holdoff = 30;//debounce and hold state until released
-					}
-					longPressTimer = 0;
-				}*/
+			    /*if(PINB & BUTTON){//Button active high
+				    if(!holdoff){//initial press
+					    buttonPressed();
+					    sleepTimer = timer;
+					    powerDownTimer = timer;
+					    longPressTimer = 0;
+					    pressed = true;
+				    }else{//during long press wait
+					    if(longPressTimer>=longPressTime){
+						    buttonLongPressed();
+					    }
+				    }
+				    holdoff = 3;//debounce and hold state until released
+			    }else{//Button not down
+				    if(pressed && !holdoff){
+					    buttonReleased();  // Button Released callback
+					    sleepTimer = timer;
+					    powerDownTimer = timer;
+					    pressed = false;
+					    holdoff = 30;//debounce and hold state until released
+				    }
+				    longPressTimer = 0;
+			    }*/
 
 
-			}
+       		}
 		}
-	}else if(mode==sleep){
+        
+	} else if(mode==sleep) {
+            
 		uint32_t diff = timer-powerDownTimer;
 		uint32_t startDiff = timer-startTime;
 		if(diff>500 && wake==0){
@@ -675,6 +691,7 @@ ISR(TIM0_COMPA_vect){
 			wake = 1;
 			sleepTimer = timer;
 		}
+            
 		if(wake == 1){
 			startTime = timer;
 			PORTA &= ~POWER;
@@ -706,7 +723,7 @@ ISR(TIM0_COMPA_vect){
 			holdoff=500;
 			mode = running;
 		}
-	}
+    }
 }
 
 
@@ -719,12 +736,17 @@ ISR(PCINT1_vect){
 //Pin Change 0 interrupt triggered when any of the phototransistors change level
 //Checks what pins are newly on and updates their buffers with the current time
 static volatile uint32_t oldTime = 0;
+volatile uint8_t msgNum = 0;
 
 ISR(PCINT0_vect){
 	static uint8_t prevVals = 0; //stores the previous state so that only what pins are newly on are checked
 	static uint8_t pulseCount[6]; //stores counted pulses for various actions
 	uint8_t vals = PINA & 0x3f; //mask out phototransistors
 	uint8_t newOn = vals & ~prevVals; //mask out previously on pins
+    
+    // When a pin is newly 1, then...
+    // Check if time since it last went 1 was <10 ago. If so, then it is a "pulse". Count the number of pulses. If it is 2 pulses, then activate a click.
+    // Otherwise, increment the timeBuff pointer and store the current timer in the next slot in times[]
 
 	if(mode == running){
 		powerDownTimer = timer;
@@ -745,13 +767,38 @@ ISR(PCINT0_vect){
 					if(pulseCount[i]>=4){//There have been 4 quick pulses. Enter programming mode.
 						click = 0;
 						sync = 0;
-						//	mode = recieving;  Do not enter reciving mode!
+						mode = recieving;
+						progDir = i;
+						int j;
+						for(j = 0; j < datLen; j++){//zero out buffer
+							comBuf[j]=0;
+						}
+						msgNum = 0;
 					}
 				}else{//Normally timed pulse, process normally
 					pulseCount[i]=0;
 					timeBuf[i]++;
 					timeBuf[i] &= 0x03;
 					times[i][timeBuf[i]] = timer;
+				}
+			}
+		}
+	}else if(mode == recieving){
+		modeStart = timer;
+		if(((prevVals^vals)&(1<<progDir))){//programming pin has changed
+			if(timer-oldTime > (3*PULSE_WIDTH)/2){//an edge we care about
+				if(timer-oldTime > 4*PULSE_WIDTH){//first bit. use for sync
+					bitsRcvd = 0;
+				}
+				oldTime = timer;
+				if(bitsRcvd<8){
+					uint8_t bit = ((vals&(1<<progDir))>>progDir);
+					msgNum |= bit<<(bitsRcvd%8);
+					bitsRcvd++;
+				}else	if(bitsRcvd<datLen*8+8){
+					uint8_t bit = ((vals&(1<<progDir))>>progDir);
+					comBuf[bitsRcvd/8-1] |= bit<<(bitsRcvd%8);
+					bitsRcvd++;
 				}
 			}
 		}
