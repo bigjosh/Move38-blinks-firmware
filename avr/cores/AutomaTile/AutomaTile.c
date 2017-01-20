@@ -16,8 +16,8 @@
 #include "color.h"
 
 volatile int16_t holdoff = 50;//for temporarily preventing click outputs
-volatile static uint8_t click = 0;//becomes non-zero when a click is detected
-volatile static uint8_t sync = 0;//becomes non-zero when synchronization pulses need to be sent out
+volatile static uint8_t click = 0;//becomes non-zero when a click is detected, back to zero when the click is dispatched to ClickCB() from TimerISR
+//volatile static uint8_t sync = 0;//becomes non-zero when synchronization pulses need to be sent out
 volatile static uint8_t state = 0;//current state of tile
 volatile static uint32_t timer = 0;//.1 ms timer tick
 volatile static uint32_t times[6][4];//ring buffer for holding leading  detection edge times for the phototransistors
@@ -102,9 +102,10 @@ struct Pulsing {
  * difference is found, that translates directly to a state
  * Accuracy is traded for number of states (i.e. 5 states can be communicated reliably, while 10 with less robustness)
 */
-uint8_t oldData[] = {0,0,0,0,0,0};
+uint8_t oldData[] = {0,0,0,0,0,0};      
 
 void getNeighborStates(uint8_t * result){
+    
 	uint8_t interrupts = SREG&1<<7;
 
 	if(interrupts)cli();//Disable interrupts to safely grab consistent timer value
@@ -114,31 +115,49 @@ void getNeighborStates(uint8_t * result){
 	for(i = 0; i < 6; i++){
 
 		if((curTime-times[i][timeBuf[i]])>100){//More than .1 sec since last pulse, too long
+            
 			result[pinMap[i]] = 0;
-		}else{//received pulses recently
+            
+		} else {  //received pulses recently
+            
 			uint8_t buf = timeBuf[i];//All bit-masking is to ensure the numbers are between 0 and 3
 			diffs[0] = times[i][buf] - times[i][(buf-1)&0x03];
 			diffs[1] = times[i][(buf-1)&0x03] - times[i][(buf-2)&0x03];
 			diffs[2] = times[i][(buf-2)&0x03] - times[i][(buf-3)&0x03];
-			if(diffs[0]>100 || diffs[1]>100 || diffs[2] > 100){//Not enough pulses recently
+            
+			if(diffs[0]>100 || diffs[1]>100 || diffs[2] > 100) {//Not enough pulses recently
+                
 				result[pinMap[i]] = 0;
 				oldData[i] = 0;
-			}else{//received enough pulses recently
+                
+			} else {//received enough pulses recently
+                
 				//rounding
+                // These >>3 = /8 which cancel out the *8 in the sending code
+                
 				diffs[0] >>= 3;
 				diffs[1] >>= 3;
 				diffs[2] >>= 3;
-				//checking if any two of the differences are equal and using a value from the equal pair
+                
+				// three most recent times must all be the same for us to read as good
 				if(diffs[0] == diffs[1] && diffs[0] == diffs[2]){
-					result[pinMap[i]] = (uint8_t) diffs[0];
+                    
+                    uint8_t recievedValue = diffs[0];
+                                                            
+					result[pinMap[i]] = recievedValue;
+                    
 					oldData[i]=result[i];
-				}else{//too much variation reuse old value
+                    
+				} else {//too much variation reuse old value 
+                    
 					result[pinMap[i]] = oldData[i];
+                    
 				}
 			}
 		}
 	}
-	if(interrupts)sei();//Re-enable interrupts
+    
+	if(interrupts) sei();//Re-enable interrupts
 }
 
 /*
@@ -475,26 +494,14 @@ void setTimerCallbackTime(uint16_t t){
 	timerCBtime = t;
 }
 
+volatile uint8_t pendingshortpulses = 0;     // number of short pulses to send from TIMER ISR
+
 void sendStep(){
-	uint8_t interrupts = SREG&1<<7;
-
-	if(interrupts)	cli();
-	uint32_t t = timer;
-	if(interrupts)sei();
-	uint32_t st = t;
-	uint8_t done = 0;
-	sync = 3;
-	holdoff = 200;
-
-	while(!done){
-		cli();
-		t = timer;
-		sei();
-		if(t-st>100){
-			done = 1;
-		}
-	}
-	clickCB();
+	
+    pendingshortpulses = 5;  // This will actually fire the short pulses in TIMER ISR as soon as current state transition is done.     
+    
+    click=1;          // Trigger a callback internally, which will also start the holdoff
+        
 }
 
 void setSharedDataBuffer(uint8_t* comb,uint8_t* datb , uint8_t len){
@@ -514,11 +521,13 @@ uint8_t getSharedData(uint8_t i){
 //Timer interrupt occurs every 1 ms
 //Increments timer and controls IR LEDs to keep their timing consistent
 ISR(TIM0_COMPA_vect){
-	volatile static uint8_t IRcount = 0;//Tracks cycles for accurate IR LED timing
-	volatile static uint8_t sendState = 0;//State currently being sent. only updates on pulse to ensure accurate states are sent
-	volatile static bool pressed = false; // used to differenciate between button pressed and released states
+    
+	volatile static bool pressed = false; // used to differentiate between button pressed and released states
 	volatile static bool multipleClicks = false; // used to trigger multi clicks detection
 	volatile static uint8_t numClicks = 0; // Counter for how many clicks have been pressed
+    
+	static uint8_t IRcountdown = 0;             // Tracks ms cycles until next pulse
+    
 	timer++;
 
 	timerCBcount++;
@@ -528,56 +537,47 @@ ISR(TIM0_COMPA_vect){
 	}
 
 	if(mode==running){
-		//check if a click has happened and call appropriate function
-		if(click){
-			clickCB();
-			holdoff = 100;
-			click = 0;
+        
+        
+		//check if a click has happened and call appropriate function, or suppress it if one happened too recently 
+		
+        static uint8_t clickholdoff=0;
+        
+		if (holdoff) {
+    		clickholdoff--;
+    		click=0;            // Throw away clicks that happen during the holdoff
+    		} else if(click){
+    		clickCB();
+    		clickholdoff = 100;
+    		click = 0;
 		}
-
-		IRcount++;
-		if(IRcount>=(uint8_t)(sendState*8+4)){//State timings are off by 4 from a multiple of 8 to help with detection
-			IRcount = 0;
-			if(sync==0){
-				sendState = state;
-			}
-		}
-		if(IRcount==5){
-			PORTB |= IR;
-			DDRB |= IR;
-		}else if(IRcount==7&&sync>1){
-			PORTB |= IR;
-			DDRB |= IR;
-			sync = 1;
-		}else if(IRcount==9&&sync==1){
-			PORTB |= IR;
-			DDRB |= IR;
-			sync = 0;
-		}else if(sendState==0&&sync>0){//0 case is special
-			if((IRcount&0x01)!=0){
-				PORTB |= IR;
-				DDRB |= IR;
-				sync -= 1;
-			}else{
-				DDRB &= ~IR;//Set direction in
-				PORTB &= ~IR;
-			}
-		}else{
+        
+        
+        if (IRcountdown==0) {                   // Nothing in progress, we are free to start something now.
             
-            // If we get here...
-            // Sync==0
-            // IRCount != 5
-            // IRcount < (uint8_t)(sendState*8+4)
+            IR_ON();                            // Start a pulse!
             
-			DDRB &= ~IR;//Set direction in
-			PORTB &= ~IR;//Set pin tristated
-
-			// if the button has been pressed increment longpresstimer
-			// outside of the holdoff statement to make sure that we increase
-			// during debouncing cycles too
-			if(pressed){
-				longPressTimer++;
-			}
+                                                // Now figure out how long it will be!
+                                                
+            if (pendingshortpulses) {           // Short pulses get priority
+                
+                pendingshortpulses--;
+                IRcountdown = 3;                // A short pulse is 3ms (I just decided!)
+                
+            } else {                            // No pending short pulses, so lets start sending state again!
+                
+                IRcountdown = state * 8;        // This is th eprotocol, I didn't write it! :)
+            }
+        
+        } else {
+            
+            IR_OFF();                           // THis is redundant after the first pass, but who cares.
+            
+            IRcountdown--;
+            
+            // Do stuff that must happen when LED is off here
+            // For example, checking the button (becuase the button is on the same pin as the IR LED, we can't check button when LED is on)        
+        
 
 			// Multiclick detection
 			if(multipleClicks){
@@ -602,14 +602,44 @@ ISR(TIM0_COMPA_vect){
 					numClicks = 0;
 				}
 			}
-
-			if(IRcount<5) {
-
-    			if(!holdoff){ // This is a good detection we are not debouncing!
+            
+            static buttonholdoff = 0;           // Use for debouncing button
+            static buttonState = 0 ;
+            
+            if (buttonholdoff) {
+                
+                buttonholdoff--;
+                
+            } else {
+                
+                if (BUTTON_DOWN()) {
                     
+                    if (buttonState) {          // We already know it was pressed
+                        
+                        // Do multipress and long press here
+                        
+                    } else {                    // New press
+                        
+						buttonPressed();
+                        buttonState=1;
+                        holdoff=50;
+                        
+					    sleepTimer = timer;
+					    powerDownTimer = timer;
+                        
+                    }
+                    
+                } else {            // Button up now
+                    
+                    buttonState=0;
+                    
+                }
+                
+                
+                /*
+                
 				    if(PINB & BUTTON){// Button pressed (Button active high)
     					if(!pressed){  // Making sure buttonPressed is not called over and over while the button is pressed
-						    buttonPressed();
 					    }
 					    pressed = true;
 					    multipleClicks = true;  // Activate multiple cicks detections
@@ -639,8 +669,6 @@ ISR(TIM0_COMPA_vect){
 						    buttonReleased();  // Button Released callback
         					numClicks++;
 						    clickDetectionTimer = 0;
-						    sleepTimer = timer;
-						    powerDownTimer = timer;
 						    pressed = false;
 						    longPressTimer = 0;  // Reset lpt counter after button has been released
 					    }
@@ -754,26 +782,16 @@ ISR(PCINT0_vect){
 		uint8_t i;
 		for(i = 0; i < 6; i++){
 			if(newOn & 1<<i){ //if an element is newly on,
+                
 				if(timer-times[i][timeBuf[i]]<10){//This is a rapid pulse. treat like a click
 					pulseCount[i]++;
 					wake = 1;
 					if(pulseCount[i]==2){
 						if(holdoff==0){
 							click = 1;
-							sync = 3;
+							sync = 3;                   // So This repropigates the just-recieved step?
 							sleepTimer = timer;
 						}
-					}
-					if(pulseCount[i]>=4){//There have been 4 quick pulses. Enter programming mode.
-						click = 0;
-						sync = 0;
-						mode = recieving;
-						progDir = i;
-						int j;
-						for(j = 0; j < datLen; j++){//zero out buffer
-							comBuf[j]=0;
-						}
-						msgNum = 0;
 					}
 				}else{//Normally timed pulse, process normally
 					pulseCount[i]=0;

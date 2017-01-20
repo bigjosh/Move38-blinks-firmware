@@ -16,7 +16,14 @@
 #define PHOTO4 (1<<PA1)
 #define PHOTO5 (1<<PA2)
 //IR LED output pin
+#define IRPORT PORTB
+#define IRDDR  DDRB
 #define IR (1<<PB2)
+
+
+#define IR_ON(x)  (IRPORT|=IR; IRDDR|=IR;)           // Order is import to avoid shorting GND to Vcc!
+#define IR_OFF(x) (IRDDR&=~IR;IRPORT&=~IR;)          // Order is import to avoid shorting GND to Vcc!
+
 //LED clock and data pins
 
 #define LEDPORT PORTB
