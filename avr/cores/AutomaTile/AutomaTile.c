@@ -21,7 +21,7 @@ volatile static uint8_t sync = 0;//becomes non-zero when synchronization pulses 
 volatile static uint8_t state = 0;//current state of tile
 volatile static uint32_t timer = 0;//.1 ms timer tick
 volatile static uint32_t times[6][4];//ring buffer for holding leading  detection edge times for the phototransistors
-volatile static uint8_t timeBuf[6];//ring buffer indices
+volatile static uint8_t timeBuf[6];//ring buffer indices. For each pin, this array holds index into times[pin] of the timestamp of the most recent rising edge
 volatile static uint8_t soundEn = 1; //if true, react to sound
 
 // Pin mapping to arrange pins correctly on board
@@ -129,7 +129,7 @@ void getNeighborStates(uint8_t * result){
 				diffs[1] >>= 3;
 				diffs[2] >>= 3;
 				//checking if any two of the differences are equal and using a value from the equal pair
-				if(diffs[0] == diffs[1] &&diffs[0] == diffs[2]){
+				if(diffs[0] == diffs[1] && diffs[0] == diffs[2]){
 					result[pinMap[i]] = (uint8_t) diffs[0];
 					oldData[i]=result[i];
 				}else{//too much variation reuse old value
@@ -563,6 +563,12 @@ ISR(TIM0_COMPA_vect){
 				PORTB &= ~IR;
 			}
 		}else{
+            
+            // If we get here...
+            // Sync==0
+            // IRCount != 5
+            // IRcount < (uint8_t)(sendState*8+4)
+            
 			DDRB &= ~IR;//Set direction in
 			PORTB &= ~IR;//Set pin tristated
 
@@ -597,74 +603,85 @@ ISR(TIM0_COMPA_vect){
 				}
 			}
 
-			if(IRcount<5){
+			if(IRcount<5) {
 
-			if(!holdoff){ // This is a good detection we are not debouncing!
-				if(PINB & BUTTON){// Button pressed (Button active high)
-					if(!pressed){  // Making sure buttonPressed is not called over and over while the button is pressed
-						buttonPressed();
-					}
-					pressed = true;
-					multipleClicks = true;  // Activate multiple cicks detections
-					sleepTimer = timer;
-					powerDownTimer = timer;
+    			if(!holdoff){ // This is a good detection we are not debouncing!
+                    
+				    if(PINB & BUTTON){// Button pressed (Button active high)
+    					if(!pressed){  // Making sure buttonPressed is not called over and over while the button is pressed
+						    buttonPressed();
+					    }
+					    pressed = true;
+					    multipleClicks = true;  // Activate multiple cicks detections
+					    sleepTimer = timer;
+					    powerDownTimer = timer;
 
-					if(longPressTimer>=longPressTime){
-						// This will keep triggering the button long pressed function every time
-						// the button keeps being pressed over long press time
-						buttonLongPressed();
-						longPressTimer = 0;
-					}
-				// Getting read of the holdoff fixed multiple clicks issues
-				// Legacy library had 200ms debounce, which is a really high value, my guess
-				// to help mask the main sleep detection issue.
-				// Its hard to tell for me (Luis) what is the real debounce time when holdoff = 0,
-				// at least 2ms but also its dependant on IRcount
-				holdoff = 0;
+					    if(longPressTimer>=longPressTime){
+    						// This will keep triggering the button long pressed function every time
+						    // the button keeps being pressed over long press time
+						    buttonLongPressed();
+						    longPressTimer = 0;
+					    }
+                        
+				        // Getting read of the holdoff fixed multiple clicks issues
+        				// Legacy library had 200ms debounce, which is a really high value, my guess
+				        // to help mask the main sleep detection issue.
+				        // Its hard to tell for me (Luis) what is the real debounce time when holdoff = 0,
+				        // at least 2ms but also its dependant on IRcount
+                        
+                        
+        				holdoff = 0;
 
-				} else {  // Button not pressed
-					if(pressed){
-						buttonReleased();  // Button Released callback
-						numClicks++;
-						clickDetectionTimer = 0;
-						sleepTimer = timer;
-						powerDownTimer = timer;
-						pressed = false;
-						longPressTimer = 0;  // Reset lpt counter after button has been released
-					}
-				}
-			} else {
+        			} else {  // Button not pressed
+                            
+					    if(pressed){
+                                
+						    buttonReleased();  // Button Released callback
+        					numClicks++;
+						    clickDetectionTimer = 0;
+						    sleepTimer = timer;
+						    powerDownTimer = timer;
+						    pressed = false;
+						    longPressTimer = 0;  // Reset lpt counter after button has been released
+					    }
+			        }
+                    
+			    } else {        // holdoff!=0
+                        
+                    // Nothing...
 
-			}
+			    }
 
-				/*if(PINB & BUTTON){//Button active high
-					if(!holdoff){//initial press
-						buttonPressed();
-						sleepTimer = timer;
-						powerDownTimer = timer;
-						longPressTimer = 0;
-						pressed = true;
-					}else{//during long press wait
-						if(longPressTimer>=longPressTime){
-							buttonLongPressed();
-						}
-					}
-					holdoff = 3;//debounce and hold state until released
-				}else{//Button not down
-					if(pressed && !holdoff){
-						buttonReleased();  // Button Released callback
-						sleepTimer = timer;
-						powerDownTimer = timer;
-						pressed = false;
-						holdoff = 30;//debounce and hold state until released
-					}
-					longPressTimer = 0;
-				}*/
+			    /*if(PINB & BUTTON){//Button active high
+				    if(!holdoff){//initial press
+					    buttonPressed();
+					    sleepTimer = timer;
+					    powerDownTimer = timer;
+					    longPressTimer = 0;
+					    pressed = true;
+				    }else{//during long press wait
+					    if(longPressTimer>=longPressTime){
+						    buttonLongPressed();
+					    }
+				    }
+				    holdoff = 3;//debounce and hold state until released
+			    }else{//Button not down
+				    if(pressed && !holdoff){
+					    buttonReleased();  // Button Released callback
+					    sleepTimer = timer;
+					    powerDownTimer = timer;
+					    pressed = false;
+					    holdoff = 30;//debounce and hold state until released
+				    }
+				    longPressTimer = 0;
+			    }*/
 
 
-			}
+       		}
 		}
-	}else if(mode==sleep){
+        
+	} else if(mode==sleep) {
+            
 		uint32_t diff = timer-powerDownTimer;
 		uint32_t startDiff = timer-startTime;
 		if(diff>500 && wake==0){
@@ -674,6 +691,7 @@ ISR(TIM0_COMPA_vect){
 			wake = 1;
 			sleepTimer = timer;
 		}
+            
 		if(wake == 1){
 			startTime = timer;
 			PORTA &= ~POWER;
@@ -705,7 +723,7 @@ ISR(TIM0_COMPA_vect){
 			holdoff=500;
 			mode = running;
 		}
-	}
+    }
 }
 
 
@@ -725,6 +743,10 @@ ISR(PCINT0_vect){
 	static uint8_t pulseCount[6]; //stores counted pulses for various actions
 	uint8_t vals = PINA & 0x3f; //mask out phototransistors
 	uint8_t newOn = vals & ~prevVals; //mask out previously on pins
+    
+    // When a pin is newly 1, then...
+    // Check if time since it last went 1 was <10 ago. If so, then it is a "pulse". Count the number of pulses. If it is 2 pulses, then activate a click.
+    // Otherwise, increment the timeBuff pointer and store the current timer in the next slot in times[]
 
 	if(mode == running){
 		powerDownTimer = timer;
