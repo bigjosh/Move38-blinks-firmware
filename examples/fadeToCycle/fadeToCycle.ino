@@ -21,11 +21,20 @@ int numColors = 7;
 int index = 0;
 
 void setup() {
-   setButtonCallback(buttonPressed);
+   //setButtonPressedCallback(buttonPressed);
    setColorRGB(255, 0, 0);
 }
 
 void loop() {
+}
+
+void buttonClicked(){
+}
+
+void buttonDoubleClicked(){
+}
+
+void buttonTripleClicked(){
 }
 
 void buttonPressed() {
@@ -37,3 +46,8 @@ void buttonPressed() {
           1000);            // 1 second
 }
 
+void buttonReleased() {
+}
+
+void buttonLongPressed(){
+}
