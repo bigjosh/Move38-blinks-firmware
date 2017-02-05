@@ -152,16 +152,14 @@ uint8_t getNeighbor(const uint8_t neighbor){
 
 bool isAlone(void){
 	uint8_t neighbors[TILE_SIDES];
-	bool alone = true;
 	getNeighborStates(neighbors);
 	uint8_t i;
 	for(i=0; i<TILE_SIDES; i++){
-		if (neighbors[TILE_SIDES]){
-			alone =  false;
-			break;
+		if (neighbors[i]){
+			return( false );
 		}
 	}
-	return alone;
+	return true;
 }
 
 int32_t getTimer(){
