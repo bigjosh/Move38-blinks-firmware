@@ -183,15 +183,6 @@ void setMicOff();
 void setSharedDataBuffer(volatile uint8_t* comb,volatile uint8_t* datb , uint8_t len);
 uint8_t getSharedData(uint8_t i);
 
-enum MODE
-{
-	sleep,
-	running,
-	recieving,
-	transmitting
-};
-
-extern enum MODE mode;
 
 extern uint32_t timeout;
 extern volatile uint32_t sleepTimer;
