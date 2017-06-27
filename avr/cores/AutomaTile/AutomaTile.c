@@ -855,7 +855,6 @@ ISR(TIM0_COMPA_vect){
 				wake=7;
 			}
 		}else if(wake == 7){
-			enAD();
 			powerDownTimer = timer;
 			sleepTimer = timer;
 			holdoff=500;
@@ -939,49 +938,4 @@ ISR(PCINT0_vect){
 	}
 
 	prevVals = vals;
-}
-//ADC conversion complete interrupt
-//Calculates a running median for zeroing out signal
-//Then calculates a running median of deltas from the median to check for exceptional events
-//If a delta is very high compared to the median, a click is detected and click is set to non-0
-ISR(ADC_vect){
-	//Values saved for derivative calculation
-	static uint16_t median = 1<<15;
-	static uint16_t medDelta = 1<<5;
-
-	uint8_t adc;
-
-	adc = ADCH;// Record ADC value
-
-	//update running median. Error on high side.
-	//note that due to comparison, the median is scaled up by 2^8
-	if((adc<<8)<median){
-		median--;
-		}else{
-		median++;
-	}
-	uint16_t delta;
-	if(median > (adc<<8)){// Calculate delta
-		delta = (median>>8)-adc;
-		}else{
-		delta = adc-(median>>8);
-	}
-
-	//Update running delta median. Error on high side.
-	//note that due to comparison, the median is scaled up by 2^4=16
-	if((delta<<4)<medDelta && medDelta > 10){
-		medDelta--;
-		}else{
-		medDelta++;
-	}
-
-	if(holdoff == 0){//holdoff can be set elsewhere to disable click being set for a period of time
-		if(medDelta < delta){//check for click. as the median delta is scaled up by 16, an exceptional event is needed.
-			if(soundEn){
-				step = delta;//Board triggered click as soon as it could (double steps)
-				sync = 3;
-				sleepTimer = timer;
-			}
-		}
-	}
 }

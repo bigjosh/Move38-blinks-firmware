@@ -75,7 +75,6 @@ void buttonTripleClicked(void);
 
 // gets rid of implicit declaration warning
 void updateLed(void);
-void disAD(void);
 
 #define PULSE_WIDTH 8
 extern volatile int16_t holdoff;

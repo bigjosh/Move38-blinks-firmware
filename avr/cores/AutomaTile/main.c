@@ -53,7 +53,6 @@ int main(void) {
 						debugBlinkRed();
 					debugBlinkBlue();
 					mode = sleep;
-					disAD();
 					DDRB &= ~IR;//Set direction in
 					PORTB &= ~IR;//Set pin tristated
 					sendColor(LEDCLK, LEDDAT, black);
@@ -65,7 +64,6 @@ int main(void) {
 			loop();
 		}else if(mode==recieving){
 			//disable A/D
-			disAD();
 			//set photo transistor interrupt to only trigger on specific direction
 			setDir(progDir);
 			//set recieving color
@@ -135,8 +133,6 @@ int main(void) {
 			while(getTimer()<startTime+2000);//pause for effect
 
 			//done transmitting
-			//re-enable A/D
-			enAD();
 			//re-enable all phototransistors
 			setDirAll();
 			setState(0);
