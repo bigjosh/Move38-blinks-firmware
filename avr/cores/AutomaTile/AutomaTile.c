@@ -51,8 +51,6 @@ volatile uint32_t modeStart = 0;
 enum MODE {
 	sleep,
 	running,
-	recieving,
-	transmitting
 };
 enum MODE mode = running;
 
@@ -897,41 +895,11 @@ ISR(PCINT0_vect){
 							sleepTimer = timer;
 						}
 					}
-					if(pulseCount[i]>=4){//There have been 4 quick pulses. Enter programming mode.
-						step = 0;
-						sync = 0;
-						mode = recieving;
-						progDir = i;
-						int j;
-						for(j = 0; j < datLen; j++){//zero out buffer
-							comBuf[j]=0;
-						}
-						msgNum = 0;
-					}
 				}else{//Normally timed pulse, process normally
 					pulseCount[i]=0;
 					timeBuf[i]++;
 					timeBuf[i] &= 0x03;
 					times[i][timeBuf[i]] = timer;
-				}
-			}
-		}
-	}else if(mode == recieving){
-		modeStart = timer;
-		if(((prevVals^vals)&(1<<progDir))){//programming pin has changed
-			if(timer-oldTime > (3*PULSE_WIDTH)/2){//an edge we care about
-				if(timer-oldTime > 4*PULSE_WIDTH){//first bit. use for sync
-					bitsRcvd = 0;
-				}
-				oldTime = timer;
-				if(bitsRcvd<8){
-					uint8_t bit = ((vals&(1<<progDir))>>progDir);
-					msgNum |= bit<<(bitsRcvd%8);
-					bitsRcvd++;
-				}else	if(bitsRcvd<datLen*8+8){
-					uint8_t bit = ((vals&(1<<progDir))>>progDir);
-					comBuf[bitsRcvd/8-1] |= bit<<(bitsRcvd%8);
-					bitsRcvd++;
 				}
 			}
 		}
