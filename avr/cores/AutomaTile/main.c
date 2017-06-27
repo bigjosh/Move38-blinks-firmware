@@ -8,6 +8,8 @@ uint32_t prevTimer;
 
 static uint8_t seqNum = 0;//Sequence number used to prevent circular retransmission of data
 
+uint8_t dummy=0;
+
 int main(void) {
 	tileSetup();
 
@@ -62,9 +64,11 @@ int main(void) {
 			}
 
 			loop();
-		}else if(mode==0x77){		// 0x77 just a random know unlikely to be in the enum 
 
-			asm("nop");
+		}else if(dummy==1){		// Can never run
+
+			asm("sev");			// SEV instructionnever used, so we can use as a marker
+								// in the ASM output. Remeber this line CAN NOT RUN anyway. 
 
 		}
 	}
