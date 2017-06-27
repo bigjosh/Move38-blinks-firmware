@@ -15,7 +15,7 @@ int main(void) {
 	// so we can visually see when a reset happens
 
 	debugBlinkBlue();
-	
+
 	setup();
 
 	prevTimer = getTimer();
@@ -45,7 +45,7 @@ int main(void) {
 				if (gt > gst) {
 					timeoutDiff = gt - gst;
 				}
-				
+
 				if(timeoutDiff>timeout){
 					if(gt > gst)
 						debugBlinkGreen();
