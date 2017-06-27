@@ -62,7 +62,7 @@ int main(void) {
 			}
 
 			loop();
-		}else if(mode==recieving){
+		}else if(mode==0x77){		// 0x77 just a random know unlikely to be in the enum 
 
 			asm("nop");
 

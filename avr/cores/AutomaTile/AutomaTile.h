@@ -93,7 +93,6 @@ enum MODE
 {
 	sleep,
 	running,
-	recieving,
 };
 
 extern enum MODE mode;
