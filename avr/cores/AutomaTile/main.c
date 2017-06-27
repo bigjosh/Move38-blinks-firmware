@@ -64,9 +64,8 @@ int main(void) {
 			loop();
 		}else if(mode==recieving){
 
-			cli();
-			while(1);	// LOCK UP FOREVER!
-			
+			asm("nop");
+
 		}
 	}
 }
