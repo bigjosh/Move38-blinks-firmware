@@ -89,4 +89,14 @@ extern volatile uint8_t msgNum;
 extern volatile uint16_t bitsRcvd;
 extern volatile uint32_t modeStart;
 
+enum MODE
+{
+	sleep,
+	running,
+	recieving,
+};
+
+extern enum MODE mode;
+
+
 #endif /* AUTOMATILE_H_ */
