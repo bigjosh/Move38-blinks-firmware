@@ -67,6 +67,7 @@ int main(void) {
 
 		}else if(dummy==1){		// Can never run
 
+			asm("nop");			// SEV instruction never used, so we can use as a marker
 								// in the ASM output. Remeber this line CAN NOT RUN anyway. 
 
 		}
