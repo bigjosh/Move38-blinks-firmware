@@ -67,17 +67,6 @@ int main(void) {
 			cli();
 			while(1);	// LOCK UP FOREVER!
 			
-			//disable A/D
-			//set photo transistor interrupt to only trigger on specific direction
-			setDir(progDir);
-			//set recieving color
-			sendColor(LEDCLK, LEDDAT, recieveColor);
-			//record time entering the mode for timeout
-			modeStart = getTimer();
-			while(mode==recieving){//stay in this mode until instructed to leave or timeout
-				uint32_t diff = getTimer()-modeStart;
-			}
-			mode = running;
 		}
 	}
 }
