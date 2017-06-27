@@ -35,7 +35,7 @@ Disassembly of section .text:
       2e:	10 e0       	ldi	r17, 0x00	; 0
       30:	a0 e6       	ldi	r26, 0x60	; 96
       32:	b0 e0       	ldi	r27, 0x00	; 0
-      34:	e2 ee       	ldi	r30, 0xE2	; 226
+      34:	e4 ed       	ldi	r30, 0xD4	; 212
       36:	f1 e1       	ldi	r31, 0x11	; 17
       38:	02 c0       	rjmp	.+4      	; 0x3e <__SP_H__>
       3a:	05 90       	lpm	r0, Z+
@@ -54,11 +54,11 @@ Disassembly of section .text:
       4c:	1d 92       	st	X+, r1
 
 0000004e <.do_clear_bss_start>:
-      4e:	ac 35       	cpi	r26, 0x5C	; 92
+      4e:	ab 35       	cpi	r26, 0x5B	; 91
       50:	b2 07       	cpc	r27, r18
       52:	e1 f7       	brne	.-8      	; 0x4c <.do_clear_bss_loop>
       54:	5f d7       	rcall	.+3774   	; 0xf14 <main>
-      56:	c3 c8       	rjmp	.-3706   	; 0xfffff1de <__eeprom_end+0xff7ef1de>
+      56:	bc c8       	rjmp	.-3720   	; 0xfffff1d0 <__eeprom_end+0xff7ef1d0>
 
 00000058 <__bad_interrupt>:
       58:	d3 cf       	rjmp	.-90     	; 0x0 <__vectors>
@@ -177,7 +177,7 @@ void buttonLongPressed(){
       d8:	9d d6       	rcall	.+3386   	; 0xe14 <initIO>
       da:	88 e3       	ldi	r24, 0x38	; 56
       dc:	90 e0       	ldi	r25, 0x00	; 0
-      de:	cf d7       	rcall	.+3998   	; 0x107e <setPort>
+      de:	c8 d7       	rcall	.+3984   	; 0x1070 <setPort>
       e0:	20 91 75 00 	lds	r18, 0x0075
       e4:	30 91 76 00 	lds	r19, 0x0076
       e8:	40 91 77 00 	lds	r20, 0x0077
@@ -185,7 +185,7 @@ void buttonLongPressed(){
       ee:	70 e0       	ldi	r23, 0x00	; 0
       f0:	81 e0       	ldi	r24, 0x01	; 1
       f2:	90 e0       	ldi	r25, 0x00	; 0
-      f4:	c5 d7       	rcall	.+3978   	; 0x1080 <sendColor>
+      f4:	be d7       	rcall	.+3964   	; 0x1072 <sendColor>
       f6:	78 94       	sei
       f8:	9c d6       	rcall	.+3384   	; 0xe32 <initTimer>
       fa:	85 b7       	in	r24, 0x35	; 53
@@ -227,14 +227,14 @@ void buttonLongPressed(){
      142:	f0 93 94 00 	sts	0x0094, r31
      146:	e0 93 93 00 	sts	0x0093, r30
      14a:	90 91 72 00 	lds	r25, 0x0072
-     14e:	90 93 3d 01 	sts	0x013D, r25
+     14e:	90 93 3c 01 	sts	0x013C, r25
      152:	90 91 73 00 	lds	r25, 0x0073
-     156:	90 93 46 01 	sts	0x0146, r25
+     156:	90 93 45 01 	sts	0x0145, r25
      15a:	90 91 74 00 	lds	r25, 0x0074
-     15e:	90 93 4f 01 	sts	0x014F, r25
-     162:	80 93 3e 01 	sts	0x013E, r24
-     166:	60 93 47 01 	sts	0x0147, r22
-     16a:	40 93 50 01 	sts	0x0150, r20
+     15e:	90 93 4e 01 	sts	0x014E, r25
+     162:	80 93 3d 01 	sts	0x013D, r24
+     166:	60 93 46 01 	sts	0x0146, r22
+     16a:	40 93 4f 01 	sts	0x014F, r20
      16e:	85 e0       	ldi	r24, 0x05	; 5
      170:	36 95       	lsr	r19
      172:	27 95       	ror	r18
@@ -244,7 +244,7 @@ void buttonLongPressed(){
      17a:	02 2e       	mov	r0, r18
      17c:	00 0c       	add	r0, r0
      17e:	dd 0b       	sbc	r29, r29
-     180:	ef e3       	ldi	r30, 0x3F	; 63
+     180:	ee e3       	ldi	r30, 0x3E	; 62
      182:	f1 e0       	ldi	r31, 0x01	; 1
      184:	36 83       	std	Z+6, r19	; 0x06
      186:	25 83       	std	Z+5, r18	; 0x05
@@ -261,15 +261,15 @@ void buttonLongPressed(){
      19c:	94 83       	std	Z+4, r25	; 0x04
      19e:	83 83       	std	Z+3, r24	; 0x03
      1a0:	be 01       	movw	r22, r28
-     1a2:	0a d8       	rcall	.-4076   	; 0xfffff1b8 <__eeprom_end+0xff7ef1b8>
+     1a2:	03 d8       	rcall	.-4090   	; 0xfffff1aa <__eeprom_end+0xff7ef1aa>
      1a4:	60 83       	st	Z, r22
      1a6:	39 96       	adiw	r30, 0x09	; 9
      1a8:	81 e0       	ldi	r24, 0x01	; 1
-     1aa:	ea 35       	cpi	r30, 0x5A	; 90
+     1aa:	e9 35       	cpi	r30, 0x59	; 89
      1ac:	f8 07       	cpc	r31, r24
      1ae:	51 f7       	brne	.-44     	; 0x184 <fadeTo+0x4a>
-     1b0:	30 93 3c 01 	sts	0x013C, r19
-     1b4:	20 93 3b 01 	sts	0x013B, r18
+     1b0:	30 93 3b 01 	sts	0x013B, r19
+     1b4:	20 93 3a 01 	sts	0x013A, r18
      1b8:	df 91       	pop	r29
      1ba:	cf 91       	pop	r28
      1bc:	08 95       	ret
@@ -286,9 +286,9 @@ void buttonLongPressed(){
      1ce:	cd 01       	movw	r24, r26
      1d0:	69 e0       	ldi	r22, 0x09	; 9
      1d2:	70 e0       	ldi	r23, 0x00	; 0
-     1d4:	c0 d7       	rcall	.+3968   	; 0x1156 <__mulhi3>
+     1d4:	b9 d7       	rcall	.+3954   	; 0x1148 <__mulhi3>
      1d6:	ec 01       	movw	r28, r24
-     1d8:	c5 5c       	subi	r28, 0xC5	; 197
+     1d8:	c6 5c       	subi	r28, 0xC6	; 198
      1da:	de 4f       	sbci	r29, 0xFE	; 254
      1dc:	2a 81       	ldd	r18, Y+2	; 0x02
      1de:	3c 81       	ldd	r19, Y+4	; 0x04
@@ -310,8 +310,8 @@ void buttonLongPressed(){
      1fe:	cd 01       	movw	r24, r26
      200:	69 e0       	ldi	r22, 0x09	; 9
      202:	70 e0       	ldi	r23, 0x00	; 0
-     204:	a8 d7       	rcall	.+3920   	; 0x1156 <__mulhi3>
-     206:	85 5c       	subi	r24, 0xC5	; 197
+     204:	a1 d7       	rcall	.+3906   	; 0x1148 <__mulhi3>
+     206:	86 5c       	subi	r24, 0xC6	; 198
      208:	9e 4f       	sbci	r25, 0xFE	; 254
      20a:	2f ef       	ldi	r18, 0xFF	; 255
      20c:	90 c0       	rjmp	.+288    	; 0x32e <__stack+0xcf>
@@ -340,8 +340,8 @@ void buttonLongPressed(){
      23a:	01 96       	adiw	r24, 0x01	; 1
      23c:	69 e0       	ldi	r22, 0x09	; 9
      23e:	70 e0       	ldi	r23, 0x00	; 0
-     240:	8a d7       	rcall	.+3860   	; 0x1156 <__mulhi3>
-     242:	85 5c       	subi	r24, 0xC5	; 197
+     240:	83 d7       	rcall	.+3846   	; 0x1148 <__mulhi3>
+     242:	86 5c       	subi	r24, 0xC6	; 198
      244:	9e 4f       	sbci	r25, 0xFE	; 254
      246:	fc 01       	movw	r30, r24
      248:	00 81       	ld	r16, Z
@@ -355,8 +355,8 @@ void buttonLongPressed(){
      258:	cd 01       	movw	r24, r26
      25a:	69 e0       	ldi	r22, 0x09	; 9
      25c:	70 e0       	ldi	r23, 0x00	; 0
-     25e:	7b d7       	rcall	.+3830   	; 0x1156 <__mulhi3>
-     260:	85 5c       	subi	r24, 0xC5	; 197
+     25e:	74 d7       	rcall	.+3816   	; 0x1148 <__mulhi3>
+     260:	86 5c       	subi	r24, 0xC6	; 198
      262:	9e 4f       	sbci	r25, 0xFE	; 254
      264:	00 0f       	add	r16, r16
      266:	11 1f       	adc	r17, r17
@@ -372,9 +372,9 @@ void buttonLongPressed(){
      27a:	c2 2f       	mov	r28, r18
      27c:	d0 e0       	ldi	r29, 0x00	; 0
      27e:	f0 e0       	ldi	r31, 0x00	; 0
-     280:	60 91 3b 01 	lds	r22, 0x013B
-     284:	70 91 3c 01 	lds	r23, 0x013C
-     288:	66 d7       	rcall	.+3788   	; 0x1156 <__mulhi3>
+     280:	60 91 3a 01 	lds	r22, 0x013A
+     284:	70 91 3b 01 	lds	r23, 0x013B
+     288:	5f d7       	rcall	.+3774   	; 0x1148 <__mulhi3>
      28a:	e8 1b       	sub	r30, r24
      28c:	f9 0b       	sbc	r31, r25
      28e:	ce 17       	cp	r28, r30
@@ -387,8 +387,8 @@ void buttonLongPressed(){
      29c:	cd 01       	movw	r24, r26
      29e:	69 e0       	ldi	r22, 0x09	; 9
      2a0:	70 e0       	ldi	r23, 0x00	; 0
-     2a2:	59 d7       	rcall	.+3762   	; 0x1156 <__mulhi3>
-     2a4:	85 5c       	subi	r24, 0xC5	; 197
+     2a2:	52 d7       	rcall	.+3748   	; 0x1148 <__mulhi3>
+     2a4:	86 5c       	subi	r24, 0xC6	; 198
      2a6:	9e 4f       	sbci	r25, 0xFE	; 254
      2a8:	dc 01       	movw	r26, r24
      2aa:	12 96       	adiw	r26, 0x02	; 2
@@ -409,8 +409,8 @@ void buttonLongPressed(){
      2c8:	01 96       	adiw	r24, 0x01	; 1
      2ca:	69 e0       	ldi	r22, 0x09	; 9
      2cc:	70 e0       	ldi	r23, 0x00	; 0
-     2ce:	43 d7       	rcall	.+3718   	; 0x1156 <__mulhi3>
-     2d0:	85 5c       	subi	r24, 0xC5	; 197
+     2ce:	3c d7       	rcall	.+3704   	; 0x1148 <__mulhi3>
+     2d0:	86 5c       	subi	r24, 0xC6	; 198
      2d2:	9e 4f       	sbci	r25, 0xFE	; 254
      2d4:	fc 01       	movw	r30, r24
      2d6:	00 81       	ld	r16, Z
@@ -423,8 +423,8 @@ void buttonLongPressed(){
      2e4:	cd 01       	movw	r24, r26
      2e6:	69 e0       	ldi	r22, 0x09	; 9
      2e8:	70 e0       	ldi	r23, 0x00	; 0
-     2ea:	35 d7       	rcall	.+3690   	; 0x1156 <__mulhi3>
-     2ec:	85 5c       	subi	r24, 0xC5	; 197
+     2ea:	2e d7       	rcall	.+3676   	; 0x1148 <__mulhi3>
+     2ec:	86 5c       	subi	r24, 0xC6	; 198
      2ee:	9e 4f       	sbci	r25, 0xFE	; 254
      2f0:	00 0f       	add	r16, r16
      2f2:	11 1f       	adc	r17, r17
@@ -440,9 +440,9 @@ void buttonLongPressed(){
      306:	c2 2f       	mov	r28, r18
      308:	d0 e0       	ldi	r29, 0x00	; 0
      30a:	f0 e0       	ldi	r31, 0x00	; 0
-     30c:	60 91 3b 01 	lds	r22, 0x013B
-     310:	70 91 3c 01 	lds	r23, 0x013C
-     314:	20 d7       	rcall	.+3648   	; 0x1156 <__mulhi3>
+     30c:	60 91 3a 01 	lds	r22, 0x013A
+     310:	70 91 3b 01 	lds	r23, 0x013B
+     314:	19 d7       	rcall	.+3634   	; 0x1148 <__mulhi3>
      316:	e8 1b       	sub	r30, r24
      318:	f9 0b       	sbc	r31, r25
      31a:	ec 17       	cp	r30, r28
@@ -451,8 +451,8 @@ void buttonLongPressed(){
      320:	cd 01       	movw	r24, r26
      322:	69 e0       	ldi	r22, 0x09	; 9
      324:	70 e0       	ldi	r23, 0x00	; 0
-     326:	17 d7       	rcall	.+3630   	; 0x1156 <__mulhi3>
-     328:	85 5c       	subi	r24, 0xC5	; 197
+     326:	10 d7       	rcall	.+3616   	; 0x1148 <__mulhi3>
+     328:	86 5c       	subi	r24, 0xC6	; 198
      32a:	9e 4f       	sbci	r25, 0xFE	; 254
      32c:	23 0f       	add	r18, r19
      32e:	fc 01       	movw	r30, r24
@@ -466,11 +466,11 @@ void buttonLongPressed(){
      33e:	08 95       	ret
 
 00000340 <fadeUpdate>:
-     340:	80 91 3d 01 	lds	r24, 0x013D
+     340:	80 91 3c 01 	lds	r24, 0x013C
      344:	80 93 72 00 	sts	0x0072, r24
-     348:	80 91 46 01 	lds	r24, 0x0146
+     348:	80 91 45 01 	lds	r24, 0x0145
      34c:	80 93 73 00 	sts	0x0073, r24
-     350:	80 91 4f 01 	lds	r24, 0x014F
+     350:	80 91 4e 01 	lds	r24, 0x014E
      354:	80 93 74 00 	sts	0x0074, r24
      358:	20 91 72 00 	lds	r18, 0x0072
      35c:	30 91 73 00 	lds	r19, 0x0073
@@ -479,14 +479,14 @@ void buttonLongPressed(){
      366:	70 e0       	ldi	r23, 0x00	; 0
      368:	81 e0       	ldi	r24, 0x01	; 1
      36a:	90 e0       	ldi	r25, 0x00	; 0
-     36c:	89 d6       	rcall	.+3346   	; 0x1080 <sendColor>
-     36e:	80 91 3b 01 	lds	r24, 0x013B
-     372:	90 91 3c 01 	lds	r25, 0x013C
+     36c:	82 d6       	rcall	.+3332   	; 0x1072 <sendColor>
+     36e:	80 91 3a 01 	lds	r24, 0x013A
+     372:	90 91 3b 01 	lds	r25, 0x013B
      376:	9c 01       	movw	r18, r24
      378:	21 50       	subi	r18, 0x01	; 1
      37a:	31 09       	sbc	r19, r1
-     37c:	30 93 3c 01 	sts	0x013C, r19
-     380:	20 93 3b 01 	sts	0x013B, r18
+     37c:	30 93 3b 01 	sts	0x013B, r19
+     380:	20 93 3a 01 	sts	0x013A, r18
      384:	89 2b       	or	r24, r25
      386:	31 f0       	breq	.+12     	; 0x394 <fadeUpdate+0x54>
      388:	80 e0       	ldi	r24, 0x00	; 0
@@ -500,9 +500,9 @@ void buttonLongPressed(){
      39c:	08 95       	ret
 
 0000039e <fadeRainbowUpdate>:
-     39e:	60 91 1b 01 	lds	r22, 0x011B
-     3a2:	70 91 1c 01 	lds	r23, 0x011C
-     3a6:	80 91 1d 01 	lds	r24, 0x011D
+     39e:	60 91 1a 01 	lds	r22, 0x011A
+     3a2:	70 91 1b 01 	lds	r23, 0x011B
+     3a6:	80 91 1c 01 	lds	r24, 0x011C
      3aa:	4a d5       	rcall	.+2708   	; 0xe40 <hsv2rgb>
      3ac:	60 93 72 00 	sts	0x0072, r22
      3b0:	70 93 73 00 	sts	0x0073, r23
@@ -514,20 +514,20 @@ void buttonLongPressed(){
      3c6:	70 e0       	ldi	r23, 0x00	; 0
      3c8:	81 e0       	ldi	r24, 0x01	; 1
      3ca:	90 e0       	ldi	r25, 0x00	; 0
-     3cc:	59 d6       	rcall	.+3250   	; 0x1080 <sendColor>
-     3ce:	80 91 21 01 	lds	r24, 0x0121
-     3d2:	90 91 22 01 	lds	r25, 0x0122
+     3cc:	52 d6       	rcall	.+3236   	; 0x1072 <sendColor>
+     3ce:	80 91 20 01 	lds	r24, 0x0120
+     3d2:	90 91 21 01 	lds	r25, 0x0121
      3d6:	bc 01       	movw	r22, r24
      3d8:	61 50       	subi	r22, 0x01	; 1
      3da:	71 09       	sbc	r23, r1
-     3dc:	70 93 22 01 	sts	0x0122, r23
-     3e0:	60 93 21 01 	sts	0x0121, r22
+     3dc:	70 93 21 01 	sts	0x0121, r23
+     3e0:	60 93 20 01 	sts	0x0120, r22
      3e4:	89 2b       	or	r24, r25
      3e6:	09 f4       	brne	.+2      	; 0x3ea <fadeRainbowUpdate+0x4c>
      3e8:	a3 c0       	rjmp	.+326    	; 0x530 <fadeRainbowUpdate+0x192>
-     3ea:	80 91 24 01 	lds	r24, 0x0124
-     3ee:	90 91 1b 01 	lds	r25, 0x011B
-     3f2:	30 91 23 01 	lds	r19, 0x0123
+     3ea:	80 91 23 01 	lds	r24, 0x0123
+     3ee:	90 91 1a 01 	lds	r25, 0x011A
+     3f2:	30 91 22 01 	lds	r19, 0x0122
      3f6:	88 23       	and	r24, r24
      3f8:	09 f4       	brne	.+2      	; 0x3fc <fadeRainbowUpdate+0x5e>
      3fa:	4d c0       	rjmp	.+154    	; 0x496 <fadeRainbowUpdate+0xf8>
@@ -546,41 +546,41 @@ void buttonLongPressed(){
      414:	4f c0       	rjmp	.+158    	; 0x4b4 <fadeRainbowUpdate+0x116>
      416:	29 2f       	mov	r18, r25
      418:	23 0f       	add	r18, r19
-     41a:	20 93 1b 01 	sts	0x011B, r18
+     41a:	20 93 1a 01 	sts	0x011A, r18
      41e:	31 11       	cpse	r19, r1
      420:	25 c0       	rjmp	.+74     	; 0x46c <fadeRainbowUpdate+0xce>
-     422:	20 91 27 01 	lds	r18, 0x0127
-     426:	30 91 28 01 	lds	r19, 0x0128
+     422:	20 91 26 01 	lds	r18, 0x0126
+     426:	30 91 27 01 	lds	r19, 0x0127
      42a:	22 0f       	add	r18, r18
      42c:	33 1f       	adc	r19, r19
-     42e:	40 91 25 01 	lds	r20, 0x0125
-     432:	50 91 26 01 	lds	r21, 0x0126
+     42e:	40 91 24 01 	lds	r20, 0x0124
+     432:	50 91 25 01 	lds	r21, 0x0125
      436:	24 0f       	add	r18, r20
      438:	35 1f       	adc	r19, r21
-     43a:	30 93 26 01 	sts	0x0126, r19
-     43e:	20 93 25 01 	sts	0x0125, r18
-     442:	40 91 29 01 	lds	r20, 0x0129
-     446:	50 91 2a 01 	lds	r21, 0x012A
+     43a:	30 93 25 01 	sts	0x0125, r19
+     43e:	20 93 24 01 	sts	0x0124, r18
+     442:	40 91 28 01 	lds	r20, 0x0128
+     446:	50 91 29 01 	lds	r21, 0x0129
      44a:	42 17       	cp	r20, r18
      44c:	53 07       	cpc	r21, r19
      44e:	0c f0       	brlt	.+2      	; 0x452 <fadeRainbowUpdate+0xb4>
      450:	80 c0       	rjmp	.+256    	; 0x552 <fadeRainbowUpdate+0x1b4>
      452:	9f 5f       	subi	r25, 0xFF	; 255
-     454:	90 93 1b 01 	sts	0x011B, r25
+     454:	90 93 1a 01 	sts	0x011A, r25
      458:	ca 01       	movw	r24, r20
      45a:	88 0f       	add	r24, r24
      45c:	99 1f       	adc	r25, r25
      45e:	28 1b       	sub	r18, r24
      460:	39 0b       	sbc	r19, r25
-     462:	30 93 26 01 	sts	0x0126, r19
-     466:	20 93 25 01 	sts	0x0125, r18
+     462:	30 93 25 01 	sts	0x0125, r19
+     466:	20 93 24 01 	sts	0x0124, r18
      46a:	08 95       	ret
-     46c:	e0 91 1e 01 	lds	r30, 0x011E
+     46c:	e0 91 1d 01 	lds	r30, 0x011D
      470:	0e 2e       	mov	r0, r30
      472:	00 0c       	add	r0, r0
      474:	ff 0b       	sbc	r31, r31
      476:	ca 01       	movw	r24, r20
-     478:	6e d6       	rcall	.+3292   	; 0x1156 <__mulhi3>
+     478:	67 d6       	rcall	.+3278   	; 0x1148 <__mulhi3>
      47a:	e8 1b       	sub	r30, r24
      47c:	f9 0b       	sbc	r31, r25
      47e:	82 2f       	mov	r24, r18
@@ -592,7 +592,7 @@ void buttonLongPressed(){
      48a:	08 f0       	brcs	.+2      	; 0x48e <fadeRainbowUpdate+0xf0>
      48c:	62 c0       	rjmp	.+196    	; 0x552 <fadeRainbowUpdate+0x1b4>
      48e:	2f 5f       	subi	r18, 0xFF	; 255
-     490:	20 93 1b 01 	sts	0x011B, r18
+     490:	20 93 1a 01 	sts	0x011A, r18
      494:	08 95       	ret
      496:	49 2f       	mov	r20, r25
      498:	09 2e       	mov	r0, r25
@@ -609,45 +609,45 @@ void buttonLongPressed(){
      4ae:	2c f0       	brlt	.+10     	; 0x4ba <fadeRainbowUpdate+0x11c>
      4b0:	9f e7       	ldi	r25, 0x7F	; 127
      4b2:	92 0f       	add	r25, r18
-     4b4:	90 93 1b 01 	sts	0x011B, r25
+     4b4:	90 93 1a 01 	sts	0x011A, r25
      4b8:	08 95       	ret
-     4ba:	20 93 1b 01 	sts	0x011B, r18
+     4ba:	20 93 1a 01 	sts	0x011A, r18
      4be:	31 11       	cpse	r19, r1
      4c0:	23 c0       	rjmp	.+70     	; 0x508 <fadeRainbowUpdate+0x16a>
-     4c2:	40 91 27 01 	lds	r20, 0x0127
-     4c6:	50 91 28 01 	lds	r21, 0x0128
+     4c2:	40 91 26 01 	lds	r20, 0x0126
+     4c6:	50 91 27 01 	lds	r21, 0x0127
      4ca:	44 0f       	add	r20, r20
      4cc:	55 1f       	adc	r21, r21
-     4ce:	80 91 25 01 	lds	r24, 0x0125
-     4d2:	90 91 26 01 	lds	r25, 0x0126
+     4ce:	80 91 24 01 	lds	r24, 0x0124
+     4d2:	90 91 25 01 	lds	r25, 0x0125
      4d6:	48 0f       	add	r20, r24
      4d8:	59 1f       	adc	r21, r25
-     4da:	50 93 26 01 	sts	0x0126, r21
-     4de:	40 93 25 01 	sts	0x0125, r20
-     4e2:	80 91 29 01 	lds	r24, 0x0129
-     4e6:	90 91 2a 01 	lds	r25, 0x012A
+     4da:	50 93 25 01 	sts	0x0125, r21
+     4de:	40 93 24 01 	sts	0x0124, r20
+     4e2:	80 91 28 01 	lds	r24, 0x0128
+     4e6:	90 91 29 01 	lds	r25, 0x0129
      4ea:	84 17       	cp	r24, r20
      4ec:	95 07       	cpc	r25, r21
      4ee:	8c f5       	brge	.+98     	; 0x552 <fadeRainbowUpdate+0x1b4>
      4f0:	21 50       	subi	r18, 0x01	; 1
-     4f2:	20 93 1b 01 	sts	0x011B, r18
+     4f2:	20 93 1a 01 	sts	0x011A, r18
      4f6:	88 0f       	add	r24, r24
      4f8:	99 1f       	adc	r25, r25
      4fa:	48 1b       	sub	r20, r24
      4fc:	59 0b       	sbc	r21, r25
-     4fe:	50 93 26 01 	sts	0x0126, r21
-     502:	40 93 25 01 	sts	0x0125, r20
+     4fe:	50 93 25 01 	sts	0x0125, r21
+     502:	40 93 24 01 	sts	0x0124, r20
      506:	08 95       	ret
      508:	cf 01       	movw	r24, r30
-     50a:	25 d6       	rcall	.+3146   	; 0x1156 <__mulhi3>
-     50c:	30 91 1e 01 	lds	r19, 0x011E
+     50a:	1e d6       	rcall	.+3132   	; 0x1148 <__mulhi3>
+     50c:	30 91 1d 01 	lds	r19, 0x011D
      510:	83 0f       	add	r24, r19
      512:	91 1d       	adc	r25, r1
      514:	37 fd       	sbrc	r19, 7
      516:	9a 95       	dec	r25
      518:	6f e7       	ldi	r22, 0x7F	; 127
      51a:	70 e0       	ldi	r23, 0x00	; 0
-     51c:	39 d6       	rcall	.+3186   	; 0x1190 <__udivmodhi4>
+     51c:	32 d6       	rcall	.+3172   	; 0x1182 <__udivmodhi4>
      51e:	42 2f       	mov	r20, r18
      520:	02 2e       	mov	r0, r18
      522:	00 0c       	add	r0, r0
@@ -659,9 +659,9 @@ void buttonLongPressed(){
      52e:	c1 cf       	rjmp	.-126    	; 0x4b2 <fadeRainbowUpdate+0x114>
      530:	10 92 94 00 	sts	0x0094, r1
      534:	10 92 93 00 	sts	0x0093, r1
-     538:	60 91 1e 01 	lds	r22, 0x011E
-     53c:	70 91 1f 01 	lds	r23, 0x011F
-     540:	80 91 20 01 	lds	r24, 0x0120
+     538:	60 91 1d 01 	lds	r22, 0x011D
+     53c:	70 91 1e 01 	lds	r23, 0x011E
+     540:	80 91 1f 01 	lds	r24, 0x011F
      544:	7d d4       	rcall	.+2298   	; 0xe40 <hsv2rgb>
      546:	60 93 72 00 	sts	0x0072, r22
      54a:	70 93 73 00 	sts	0x0073, r23
@@ -676,8 +676,8 @@ void buttonLongPressed(){
      560:	23 30       	cpi	r18, 0x03	; 3
      562:	31 05       	cpc	r19, r1
      564:	39 f4       	brne	.+14     	; 0x574 <blink+0x20>
-     566:	20 91 2c 01 	lds	r18, 0x012C
-     56a:	30 91 2d 01 	lds	r19, 0x012D
+     566:	20 91 2b 01 	lds	r18, 0x012B
+     56a:	30 91 2c 01 	lds	r19, 0x012C
      56e:	28 17       	cp	r18, r24
      570:	39 07       	cpc	r19, r25
      572:	e1 f0       	breq	.+56     	; 0x5ac <blink+0x58>
@@ -686,9 +686,9 @@ void buttonLongPressed(){
      578:	90 e0       	ldi	r25, 0x00	; 0
      57a:	90 93 94 00 	sts	0x0094, r25
      57e:	80 93 93 00 	sts	0x0093, r24
-     582:	10 92 2b 01 	sts	0x012B, r1
-     586:	d0 93 2d 01 	sts	0x012D, r29
-     58a:	c0 93 2c 01 	sts	0x012C, r28
+     582:	10 92 2a 01 	sts	0x012A, r1
+     586:	d0 93 2c 01 	sts	0x012C, r29
+     58a:	c0 93 2b 01 	sts	0x012B, r28
      58e:	82 dd       	rcall	.-1276   	; 0x94 <getTimer>
      590:	dc 01       	movw	r26, r24
      592:	cb 01       	movw	r24, r22
@@ -696,10 +696,10 @@ void buttonLongPressed(){
      596:	9d 1f       	adc	r25, r29
      598:	a1 1d       	adc	r26, r1
      59a:	b1 1d       	adc	r27, r1
-     59c:	80 93 2e 01 	sts	0x012E, r24
-     5a0:	90 93 2f 01 	sts	0x012F, r25
-     5a4:	a0 93 30 01 	sts	0x0130, r26
-     5a8:	b0 93 31 01 	sts	0x0131, r27
+     59c:	80 93 2d 01 	sts	0x012D, r24
+     5a0:	90 93 2e 01 	sts	0x012E, r25
+     5a4:	a0 93 2f 01 	sts	0x012F, r26
+     5a8:	b0 93 30 01 	sts	0x0130, r27
      5ac:	df 91       	pop	r29
      5ae:	cf 91       	pop	r28
      5b0:	08 95       	ret
@@ -709,17 +709,17 @@ void buttonLongPressed(){
      5b4:	df 92       	push	r13
      5b6:	ef 92       	push	r14
      5b8:	ff 92       	push	r15
-     5ba:	c0 90 2e 01 	lds	r12, 0x012E
-     5be:	d0 90 2f 01 	lds	r13, 0x012F
-     5c2:	e0 90 30 01 	lds	r14, 0x0130
-     5c6:	f0 90 31 01 	lds	r15, 0x0131
+     5ba:	c0 90 2d 01 	lds	r12, 0x012D
+     5be:	d0 90 2e 01 	lds	r13, 0x012E
+     5c2:	e0 90 2f 01 	lds	r14, 0x012F
+     5c6:	f0 90 30 01 	lds	r15, 0x0130
      5ca:	64 dd       	rcall	.-1336   	; 0x94 <getTimer>
      5cc:	c6 1a       	sub	r12, r22
      5ce:	d7 0a       	sbc	r13, r23
      5d0:	e8 0a       	sbc	r14, r24
      5d2:	f9 0a       	sbc	r15, r25
-     5d4:	80 91 2c 01 	lds	r24, 0x012C
-     5d8:	90 91 2d 01 	lds	r25, 0x012D
+     5d4:	80 91 2b 01 	lds	r24, 0x012B
+     5d8:	90 91 2c 01 	lds	r25, 0x012C
      5dc:	a0 e0       	ldi	r26, 0x00	; 0
      5de:	b0 e0       	ldi	r27, 0x00	; 0
      5e0:	8c 15       	cp	r24, r12
@@ -727,7 +727,7 @@ void buttonLongPressed(){
      5e4:	ae 05       	cpc	r26, r14
      5e6:	bf 05       	cpc	r27, r15
      5e8:	c0 f5       	brcc	.+112    	; 0x65a <blinkUpdate+0xa8>
-     5ea:	80 91 2b 01 	lds	r24, 0x012B
+     5ea:	80 91 2a 01 	lds	r24, 0x012A
      5ee:	88 23       	and	r24, r24
      5f0:	71 f0       	breq	.+28     	; 0x60e <blinkUpdate+0x5c>
      5f2:	20 91 75 00 	lds	r18, 0x0075
@@ -737,8 +737,8 @@ void buttonLongPressed(){
      600:	70 e0       	ldi	r23, 0x00	; 0
      602:	81 e0       	ldi	r24, 0x01	; 1
      604:	90 e0       	ldi	r25, 0x00	; 0
-     606:	3c d5       	rcall	.+2680   	; 0x1080 <sendColor>
-     608:	10 92 2b 01 	sts	0x012B, r1
+     606:	35 d5       	rcall	.+2666   	; 0x1072 <sendColor>
+     608:	10 92 2a 01 	sts	0x012A, r1
      60c:	0e c0       	rjmp	.+28     	; 0x62a <blinkUpdate+0x78>
      60e:	20 91 72 00 	lds	r18, 0x0072
      612:	30 91 73 00 	lds	r19, 0x0073
@@ -747,23 +747,23 @@ void buttonLongPressed(){
      61c:	70 e0       	ldi	r23, 0x00	; 0
      61e:	81 e0       	ldi	r24, 0x01	; 1
      620:	90 e0       	ldi	r25, 0x00	; 0
-     622:	2e d5       	rcall	.+2652   	; 0x1080 <sendColor>
+     622:	27 d5       	rcall	.+2638   	; 0x1072 <sendColor>
      624:	81 e0       	ldi	r24, 0x01	; 1
-     626:	80 93 2b 01 	sts	0x012B, r24
-     62a:	20 91 2c 01 	lds	r18, 0x012C
-     62e:	30 91 2d 01 	lds	r19, 0x012D
-     632:	80 91 2e 01 	lds	r24, 0x012E
-     636:	90 91 2f 01 	lds	r25, 0x012F
-     63a:	a0 91 30 01 	lds	r26, 0x0130
-     63e:	b0 91 31 01 	lds	r27, 0x0131
+     626:	80 93 2a 01 	sts	0x012A, r24
+     62a:	20 91 2b 01 	lds	r18, 0x012B
+     62e:	30 91 2c 01 	lds	r19, 0x012C
+     632:	80 91 2d 01 	lds	r24, 0x012D
+     636:	90 91 2e 01 	lds	r25, 0x012E
+     63a:	a0 91 2f 01 	lds	r26, 0x012F
+     63e:	b0 91 30 01 	lds	r27, 0x0130
      642:	82 0f       	add	r24, r18
      644:	93 1f       	adc	r25, r19
      646:	a1 1d       	adc	r26, r1
      648:	b1 1d       	adc	r27, r1
-     64a:	80 93 2e 01 	sts	0x012E, r24
-     64e:	90 93 2f 01 	sts	0x012F, r25
-     652:	a0 93 30 01 	sts	0x0130, r26
-     656:	b0 93 31 01 	sts	0x0131, r27
+     64a:	80 93 2d 01 	sts	0x012D, r24
+     64e:	90 93 2e 01 	sts	0x012E, r25
+     652:	a0 93 2f 01 	sts	0x012F, r26
+     656:	b0 93 30 01 	sts	0x0130, r27
      65a:	ff 90       	pop	r15
      65c:	ef 90       	pop	r14
      65e:	df 90       	pop	r13
@@ -771,9 +771,9 @@ void buttonLongPressed(){
      662:	08 95       	ret
 
 00000664 <pulsingUpdate>:
-     664:	60 91 36 01 	lds	r22, 0x0136
-     668:	70 91 37 01 	lds	r23, 0x0137
-     66c:	80 91 38 01 	lds	r24, 0x0138
+     664:	60 91 35 01 	lds	r22, 0x0135
+     668:	70 91 36 01 	lds	r23, 0x0136
+     66c:	80 91 37 01 	lds	r24, 0x0137
      670:	e7 d3       	rcall	.+1998   	; 0xe40 <hsv2rgb>
      672:	60 93 72 00 	sts	0x0072, r22
      676:	70 93 73 00 	sts	0x0073, r23
@@ -785,13 +785,13 @@ void buttonLongPressed(){
      68c:	70 e0       	ldi	r23, 0x00	; 0
      68e:	81 e0       	ldi	r24, 0x01	; 1
      690:	90 e0       	ldi	r25, 0x00	; 0
-     692:	f6 d4       	rcall	.+2540   	; 0x1080 <sendColor>
-     694:	20 91 3a 01 	lds	r18, 0x013A
-     698:	80 91 38 01 	lds	r24, 0x0138
-     69c:	90 91 39 01 	lds	r25, 0x0139
+     692:	ef d4       	rcall	.+2526   	; 0x1072 <sendColor>
+     694:	20 91 39 01 	lds	r18, 0x0139
+     698:	80 91 37 01 	lds	r24, 0x0137
+     69c:	90 91 38 01 	lds	r25, 0x0138
      6a0:	22 23       	and	r18, r18
      6a2:	81 f0       	breq	.+32     	; 0x6c4 <pulsingUpdate+0x60>
-     6a4:	40 91 35 01 	lds	r20, 0x0135
+     6a4:	40 91 34 01 	lds	r20, 0x0134
      6a8:	29 2f       	mov	r18, r25
      6aa:	30 e0       	ldi	r19, 0x00	; 0
      6ac:	28 0f       	add	r18, r24
@@ -801,11 +801,11 @@ void buttonLongPressed(){
      6b4:	26 17       	cp	r18, r22
      6b6:	37 07       	cpc	r19, r23
      6b8:	1c f0       	brlt	.+6      	; 0x6c0 <pulsingUpdate+0x5c>
-     6ba:	10 92 3a 01 	sts	0x013A, r1
+     6ba:	10 92 39 01 	sts	0x0139, r1
      6be:	10 c0       	rjmp	.+32     	; 0x6e0 <pulsingUpdate+0x7c>
      6c0:	89 0f       	add	r24, r25
      6c2:	12 c0       	rjmp	.+36     	; 0x6e8 <pulsingUpdate+0x84>
-     6c4:	40 91 34 01 	lds	r20, 0x0134
+     6c4:	40 91 33 01 	lds	r20, 0x0133
      6c8:	28 2f       	mov	r18, r24
      6ca:	30 e0       	ldi	r19, 0x00	; 0
      6cc:	29 1b       	sub	r18, r25
@@ -816,11 +816,11 @@ void buttonLongPressed(){
      6d6:	73 07       	cpc	r23, r19
      6d8:	34 f0       	brlt	.+12     	; 0x6e6 <pulsingUpdate+0x82>
      6da:	81 e0       	ldi	r24, 0x01	; 1
-     6dc:	80 93 3a 01 	sts	0x013A, r24
-     6e0:	40 93 38 01 	sts	0x0138, r20
+     6dc:	80 93 39 01 	sts	0x0139, r24
+     6e0:	40 93 37 01 	sts	0x0137, r20
      6e4:	08 95       	ret
      6e6:	89 1b       	sub	r24, r25
-     6e8:	80 93 38 01 	sts	0x0138, r24
+     6e8:	80 93 37 01 	sts	0x0137, r24
      6ec:	08 95       	ret
 
 000006ee <updateLed>:
@@ -848,7 +848,7 @@ void buttonLongPressed(){
      722:	70 e0       	ldi	r23, 0x00	; 0
      724:	81 e0       	ldi	r24, 0x01	; 1
      726:	90 e0       	ldi	r25, 0x00	; 0
-     728:	ab c4       	rjmp	.+2390   	; 0x1080 <sendColor>
+     728:	a4 c4       	rjmp	.+2376   	; 0x1072 <sendColor>
      72a:	0a ce       	rjmp	.-1004   	; 0x340 <fadeUpdate>
      72c:	38 ce       	rjmp	.-912    	; 0x39e <fadeRainbowUpdate>
      72e:	41 cf       	rjmp	.-382    	; 0x5b2 <blinkUpdate>
@@ -1187,7 +1187,7 @@ void buttonLongPressed(){
      b04:	70 e0       	ldi	r23, 0x00	; 0
      b06:	81 e0       	ldi	r24, 0x01	; 1
      b08:	90 e0       	ldi	r25, 0x00	; 0
-     b0a:	ba d2       	rcall	.+1396   	; 0x1080 <sendColor>
+     b0a:	b3 d2       	rcall	.+1382   	; 0x1072 <sendColor>
      b0c:	80 91 0e 01 	lds	r24, 0x010E
      b10:	90 91 0f 01 	lds	r25, 0x010F
      b14:	a0 91 10 01 	lds	r26, 0x0110
@@ -1464,8 +1464,8 @@ void buttonLongPressed(){
      dac:	8e 17       	cp	r24, r30
      dae:	9f 07       	cpc	r25, r31
      db0:	4c f4       	brge	.+18     	; 0xdc4 <__vector_2+0x1ac>
-     db2:	e0 91 16 01 	lds	r30, 0x0116
-     db6:	f0 91 17 01 	lds	r31, 0x0117
+     db2:	e0 91 15 01 	lds	r30, 0x0115
+     db6:	f0 91 16 01 	lds	r31, 0x0116
      dba:	e8 0f       	add	r30, r24
      dbc:	f9 1f       	adc	r31, r25
      dbe:	10 82       	st	Z, r1
@@ -1609,18 +1609,18 @@ rgb hsv2rgb(hsv in){
     region = (uint8_t)(h) / 43;
      e6c:	8c 2f       	mov	r24, r28
      e6e:	6b e2       	ldi	r22, 0x2B	; 43
-     e70:	83 d1       	rcall	.+774    	; 0x1178 <__udivmodqi4>
+     e70:	7c d1       	rcall	.+760    	; 0x116a <__udivmodqi4>
      e72:	48 2f       	mov	r20, r24
     remainder = (h - (region * 43)) * 6; 
      e74:	90 e0       	ldi	r25, 0x00	; 0
      e76:	65 ed       	ldi	r22, 0xD5	; 213
      e78:	7f ef       	ldi	r23, 0xFF	; 255
-     e7a:	6d d1       	rcall	.+730    	; 0x1156 <__mulhi3>
+     e7a:	66 d1       	rcall	.+716    	; 0x1148 <__mulhi3>
      e7c:	8c 0f       	add	r24, r28
      e7e:	9d 1f       	adc	r25, r29
      e80:	66 e0       	ldi	r22, 0x06	; 6
      e82:	70 e0       	ldi	r23, 0x00	; 0
-     e84:	68 d1       	rcall	.+720    	; 0x1156 <__mulhi3>
+     e84:	61 d1       	rcall	.+706    	; 0x1148 <__mulhi3>
      e86:	7c 01       	movw	r14, r24
 
     p = (v * (255 - s)) >> 8;
@@ -1630,34 +1630,34 @@ rgb hsv2rgb(hsv in){
      e8e:	8e 1b       	sub	r24, r30
      e90:	9f 0b       	sbc	r25, r31
      e92:	bd 01       	movw	r22, r26
-     e94:	60 d1       	rcall	.+704    	; 0x1156 <__mulhi3>
+     e94:	59 d1       	rcall	.+690    	; 0x1148 <__mulhi3>
      e96:	39 2f       	mov	r19, r25
      e98:	d9 2e       	mov	r13, r25
     q = (v * (255 - ((s * remainder) >> 8))) >> 8;
      e9a:	c7 01       	movw	r24, r14
      e9c:	bf 01       	movw	r22, r30
-     e9e:	5b d1       	rcall	.+694    	; 0x1156 <__mulhi3>
+     e9e:	54 d1       	rcall	.+680    	; 0x1148 <__mulhi3>
      ea0:	69 2f       	mov	r22, r25
      ea2:	70 e0       	ldi	r23, 0x00	; 0
      ea4:	ce 01       	movw	r24, r28
      ea6:	86 1b       	sub	r24, r22
      ea8:	97 0b       	sbc	r25, r23
      eaa:	bd 01       	movw	r22, r26
-     eac:	54 d1       	rcall	.+680    	; 0x1156 <__mulhi3>
+     eac:	4d d1       	rcall	.+666    	; 0x1148 <__mulhi3>
      eae:	19 2f       	mov	r17, r25
     t = (v * (255 - ((s * (255 - remainder)) >> 8))) >> 8;
      eb0:	ce 01       	movw	r24, r28
      eb2:	8e 19       	sub	r24, r14
      eb4:	9f 09       	sbc	r25, r15
      eb6:	bf 01       	movw	r22, r30
-     eb8:	4e d1       	rcall	.+668    	; 0x1156 <__mulhi3>
+     eb8:	47 d1       	rcall	.+654    	; 0x1148 <__mulhi3>
      eba:	69 2f       	mov	r22, r25
      ebc:	70 e0       	ldi	r23, 0x00	; 0
      ebe:	ce 01       	movw	r24, r28
      ec0:	86 1b       	sub	r24, r22
      ec2:	97 0b       	sbc	r25, r23
      ec4:	bd 01       	movw	r22, r26
-     ec6:	47 d1       	rcall	.+654    	; 0x1156 <__mulhi3>
+     ec6:	40 d1       	rcall	.+640    	; 0x1148 <__mulhi3>
 
     // printf("region = %d, remainder = %d\n", region, remainder);
     // printf("p = %d, q = %d, t = %d \n", p, q, t);
@@ -1741,26 +1741,26 @@ rgb hsv2rgb(hsv in){
 
 00000f14 <main>:
      f14:	e1 d8       	rcall	.-3646   	; 0xd8 <tileSetup>
-     f16:	18 d1       	rcall	.+560    	; 0x1148 <debugBlinkBlue>
+     f16:	11 d1       	rcall	.+546    	; 0x113a <debugBlinkBlue>
      f18:	a0 d8       	rcall	.-3776   	; 0x5a <setup>
      f1a:	bc d8       	rcall	.-3720   	; 0x94 <getTimer>
-     f1c:	60 93 58 01 	sts	0x0158, r22
-     f20:	70 93 59 01 	sts	0x0159, r23
-     f24:	80 93 5a 01 	sts	0x015A, r24
-     f28:	90 93 5b 01 	sts	0x015B, r25
+     f1c:	60 93 57 01 	sts	0x0157, r22
+     f20:	70 93 58 01 	sts	0x0158, r23
+     f24:	80 93 59 01 	sts	0x0159, r24
+     f28:	90 93 5a 01 	sts	0x015A, r25
      f2c:	c0 90 75 00 	lds	r12, 0x0075
      f30:	d0 90 76 00 	lds	r13, 0x0076
      f34:	e0 90 77 00 	lds	r14, 0x0077
      f38:	80 91 66 00 	lds	r24, 0x0066
      f3c:	90 91 67 00 	lds	r25, 0x0067
-     f40:	01 97       	sbiw	r24, 0x01	; 1
-     f42:	09 f0       	breq	.+2      	; 0xf46 <main+0x32>
-     f44:	85 c0       	rjmp	.+266    	; 0x1050 <main+0x13c>
+     f40:	81 30       	cpi	r24, 0x01	; 1
+     f42:	91 05       	cpc	r25, r1
+     f44:	e9 f7       	brne	.-6      	; 0xf40 <main+0x2c>
      f46:	a6 d8       	rcall	.-3764   	; 0x94 <getTimer>
-     f48:	00 91 58 01 	lds	r16, 0x0158
-     f4c:	10 91 59 01 	lds	r17, 0x0159
-     f50:	20 91 5a 01 	lds	r18, 0x015A
-     f54:	30 91 5b 01 	lds	r19, 0x015B
+     f48:	00 91 57 01 	lds	r16, 0x0157
+     f4c:	10 91 58 01 	lds	r17, 0x0158
+     f50:	20 91 59 01 	lds	r18, 0x0159
+     f54:	30 91 5a 01 	lds	r19, 0x015A
      f58:	dc 01       	movw	r26, r24
      f5a:	cb 01       	movw	r24, r22
      f5c:	80 1b       	sub	r24, r16
@@ -1800,10 +1800,10 @@ rgb hsv2rgb(hsv in){
      fb0:	08 f0       	brcs	.+2      	; 0xfb4 <main+0xa0>
      fb2:	9d db       	rcall	.-2246   	; 0x6ee <updateLed>
      fb4:	6f d8       	rcall	.-3874   	; 0x94 <getTimer>
-     fb6:	60 93 58 01 	sts	0x0158, r22
-     fba:	70 93 59 01 	sts	0x0159, r23
-     fbe:	80 93 5a 01 	sts	0x015A, r24
-     fc2:	90 93 5b 01 	sts	0x015B, r25
+     fb6:	60 93 57 01 	sts	0x0157, r22
+     fba:	70 93 58 01 	sts	0x0158, r23
+     fbe:	80 93 59 01 	sts	0x0159, r24
+     fc2:	90 93 5a 01 	sts	0x015A, r25
      fc6:	80 91 6c 00 	lds	r24, 0x006C
      fca:	90 91 6d 00 	lds	r25, 0x006D
      fce:	a0 91 6e 00 	lds	r26, 0x006E
@@ -1845,10 +1845,10 @@ rgb hsv2rgb(hsv in){
     1022:	8a 05       	cpc	r24, r10
     1024:	9b 05       	cpc	r25, r11
     1026:	14 f4       	brge	.+4      	; 0x102c <main+0x118>
-    1028:	88 d0       	rcall	.+272    	; 0x113a <debugBlinkGreen>
+    1028:	81 d0       	rcall	.+258    	; 0x112c <debugBlinkGreen>
     102a:	01 c0       	rjmp	.+2      	; 0x102e <main+0x11a>
-    102c:	7f d0       	rcall	.+254    	; 0x112c <debugBlinkRed>
-    102e:	8c d0       	rcall	.+280    	; 0x1148 <debugBlinkBlue>
+    102c:	78 d0       	rcall	.+240    	; 0x111e <debugBlinkRed>
+    102e:	85 d0       	rcall	.+266    	; 0x113a <debugBlinkBlue>
     1030:	10 92 67 00 	sts	0x0067, r1
     1034:	10 92 66 00 	sts	0x0066, r1
     1038:	ba 98       	cbi	0x17, 2	; 23
@@ -1857,344 +1857,338 @@ rgb hsv2rgb(hsv in){
     103e:	96 01       	movw	r18, r12
     1040:	62 e0       	ldi	r22, 0x02	; 2
     1042:	81 e0       	ldi	r24, 0x01	; 1
-    1044:	1d d0       	rcall	.+58     	; 0x1080 <sendColor>
+    1044:	16 d0       	rcall	.+44     	; 0x1072 <sendColor>
     1046:	de 9a       	sbi	0x1b, 6	; 27
     1048:	10 92 9b 00 	sts	0x009B, r1
     104c:	10 d8       	rcall	.-4064   	; 0x6e <loop>
     104e:	74 cf       	rjmp	.-280    	; 0xf38 <main+0x24>
-    1050:	80 91 15 01 	lds	r24, 0x0115
-    1054:	81 30       	cpi	r24, 0x01	; 1
-    1056:	09 f0       	breq	.+2      	; 0x105a <main+0x146>
-    1058:	6f cf       	rjmp	.-290    	; 0xf38 <main+0x24>
-    105a:	38 94       	sev
-    105c:	6d cf       	rjmp	.-294    	; 0xf38 <main+0x24>
 
-0000105e <sendByte>:
+00001050 <sendByte>:
 
 void setPort(volatile uint8_t* port){
 }
 
 //bit bangs an SPI signal to the specified pins of the given data
 static void sendByte( uint8_t data){
-    105e:	28 e0       	ldi	r18, 0x08	; 8
-    1060:	30 e0       	ldi	r19, 0x00	; 0
+    1050:	28 e0       	ldi	r18, 0x08	; 8
+    1052:	30 e0       	ldi	r19, 0x00	; 0
     
     uint8_t bitmask = 0b10000000;
-    1062:	90 e8       	ldi	r25, 0x80	; 128
+    1054:	90 e8       	ldi	r25, 0x80	; 128
     
     while (bitmask) {
         
         // Set the data pin
         
         if (data&bitmask) {
-    1064:	49 2f       	mov	r20, r25
-    1066:	48 23       	and	r20, r24
-    1068:	11 f0       	breq	.+4      	; 0x106e <sendByte+0x10>
+    1056:	49 2f       	mov	r20, r25
+    1058:	48 23       	and	r20, r24
+    105a:	11 f0       	breq	.+4      	; 0x1060 <sendByte+0x10>
             LEDPORT |= LEDDAT;
-    106a:	c1 9a       	sbi	0x18, 1	; 24
-    106c:	01 c0       	rjmp	.+2      	; 0x1070 <sendByte+0x12>
+    105c:	c1 9a       	sbi	0x18, 1	; 24
+    105e:	01 c0       	rjmp	.+2      	; 0x1062 <sendByte+0x12>
             } else {
             LEDPORT &= ~LEDDAT;
-    106e:	c1 98       	cbi	0x18, 1	; 24
+    1060:	c1 98       	cbi	0x18, 1	; 24
         }
         
         // strobe the clock pin
         
         LEDPORT |= LEDCLK;
-    1070:	c0 9a       	sbi	0x18, 0	; 24
+    1062:	c0 9a       	sbi	0x18, 0	; 24
         LEDPORT &= ~LEDCLK;
-    1072:	c0 98       	cbi	0x18, 0	; 24
+    1064:	c0 98       	cbi	0x18, 0	; 24
         
         bitmask >>= 1;               // Walk to next bit
-    1074:	96 95       	lsr	r25
-    1076:	21 50       	subi	r18, 0x01	; 1
-    1078:	31 09       	sbc	r19, r1
+    1066:	96 95       	lsr	r25
+    1068:	21 50       	subi	r18, 0x01	; 1
+    106a:	31 09       	sbc	r19, r1
 //bit bangs an SPI signal to the specified pins of the given data
 static void sendByte( uint8_t data){
     
     uint8_t bitmask = 0b10000000;
     
     while (bitmask) {
-    107a:	a1 f7       	brne	.-24     	; 0x1064 <sendByte+0x6>
+    106c:	a1 f7       	brne	.-24     	; 0x1056 <sendByte+0x6>
         LEDPORT |= LEDCLK;
         LEDPORT &= ~LEDCLK;
         
         bitmask >>= 1;               // Walk to next bit
     }
  }    
-    107c:	08 95       	ret
+    106e:	08 95       	ret
 
-0000107e <setPort>:
+00001070 <setPort>:
 #include <avr/interrupt.h>
 #include "APA102C.h"
 
 #include "Pins.h"
 
 void setPort(volatile uint8_t* port){
-    107e:	08 95       	ret
+    1070:	08 95       	ret
 
-00001080 <sendColor>:
+00001072 <sendColor>:
     }
  }    
  
 //bit bangs an SPI signal to the specified pins that generates the specified color 
 //	formatted for the APA102, provided as a byte array of R,G,B
 void sendColor(uint8_t clkPin, uint8_t datPin,const rgb c){
-    1080:	cf 93       	push	r28
-    1082:	df 93       	push	r29
-    1084:	00 d0       	rcall	.+0      	; 0x1086 <sendColor+0x6>
-    1086:	1f 92       	push	r1
-    1088:	cd b7       	in	r28, 0x3d	; 61
-    108a:	de b7       	in	r29, 0x3e	; 62
+    1072:	cf 93       	push	r28
+    1074:	df 93       	push	r29
+    1076:	00 d0       	rcall	.+0      	; 0x1078 <sendColor+0x6>
+    1078:	1f 92       	push	r1
+    107a:	cd b7       	in	r28, 0x3d	; 61
+    107c:	de b7       	in	r29, 0x3e	; 62
 	//Start Frame
 	sendByte( 0x00);
+    107e:	80 e0       	ldi	r24, 0x00	; 0
+    1080:	2b 83       	std	Y+3, r18	; 0x03
+    1082:	3a 83       	std	Y+2, r19	; 0x02
+    1084:	49 83       	std	Y+1, r20	; 0x01
+    1086:	e4 df       	rcall	.-56     	; 0x1050 <sendByte>
+	sendByte( 0x00);
+    1088:	80 e0       	ldi	r24, 0x00	; 0
+    108a:	e2 df       	rcall	.-60     	; 0x1050 <sendByte>
+	sendByte( 0x00);
     108c:	80 e0       	ldi	r24, 0x00	; 0
-    108e:	2b 83       	std	Y+3, r18	; 0x03
-    1090:	3a 83       	std	Y+2, r19	; 0x02
-    1092:	49 83       	std	Y+1, r20	; 0x01
-    1094:	e4 df       	rcall	.-56     	; 0x105e <sendByte>
+    108e:	e0 df       	rcall	.-64     	; 0x1050 <sendByte>
 	sendByte( 0x00);
-    1096:	80 e0       	ldi	r24, 0x00	; 0
-    1098:	e2 df       	rcall	.-60     	; 0x105e <sendByte>
-	sendByte( 0x00);
-    109a:	80 e0       	ldi	r24, 0x00	; 0
-    109c:	e0 df       	rcall	.-64     	; 0x105e <sendByte>
-	sendByte( 0x00);
-    109e:	80 e0       	ldi	r24, 0x00	; 0
-    10a0:	de df       	rcall	.-68     	; 0x105e <sendByte>
+    1090:	80 e0       	ldi	r24, 0x00	; 0
+    1092:	de df       	rcall	.-68     	; 0x1050 <sendByte>
 	//Data
 	sendByte( 0xE1);//Set brightness to current to minimum TODO: Add setBrightness function (0xE1...0xFF)
-    10a2:	81 ee       	ldi	r24, 0xE1	; 225
-    10a4:	dc df       	rcall	.-72     	; 0x105e <sendByte>
+    1094:	81 ee       	ldi	r24, 0xE1	; 225
+    1096:	dc df       	rcall	.-72     	; 0x1050 <sendByte>
 	sendByte( c.b);
-    10a6:	49 81       	ldd	r20, Y+1	; 0x01
-    10a8:	84 2f       	mov	r24, r20
-    10aa:	d9 df       	rcall	.-78     	; 0x105e <sendByte>
+    1098:	49 81       	ldd	r20, Y+1	; 0x01
+    109a:	84 2f       	mov	r24, r20
+    109c:	d9 df       	rcall	.-78     	; 0x1050 <sendByte>
 	sendByte( c.g);
-    10ac:	3a 81       	ldd	r19, Y+2	; 0x02
-    10ae:	83 2f       	mov	r24, r19
-    10b0:	d6 df       	rcall	.-84     	; 0x105e <sendByte>
+    109e:	3a 81       	ldd	r19, Y+2	; 0x02
+    10a0:	83 2f       	mov	r24, r19
+    10a2:	d6 df       	rcall	.-84     	; 0x1050 <sendByte>
 	sendByte( c.r);
-    10b2:	2b 81       	ldd	r18, Y+3	; 0x03
-    10b4:	82 2f       	mov	r24, r18
+    10a4:	2b 81       	ldd	r18, Y+3	; 0x03
+    10a6:	82 2f       	mov	r24, r18
 }
-    10b6:	0f 90       	pop	r0
-    10b8:	0f 90       	pop	r0
-    10ba:	0f 90       	pop	r0
-    10bc:	df 91       	pop	r29
-    10be:	cf 91       	pop	r28
+    10a8:	0f 90       	pop	r0
+    10aa:	0f 90       	pop	r0
+    10ac:	0f 90       	pop	r0
+    10ae:	df 91       	pop	r29
+    10b0:	cf 91       	pop	r28
 	sendByte( 0x00);
 	//Data
 	sendByte( 0xE1);//Set brightness to current to minimum TODO: Add setBrightness function (0xE1...0xFF)
 	sendByte( c.b);
 	sendByte( c.g);
 	sendByte( c.r);
-    10c0:	ce cf       	rjmp	.-100    	; 0x105e <sendByte>
+    10b2:	ce cf       	rjmp	.-100    	; 0x1050 <sendByte>
 
-000010c2 <debugBlinkColor>:
+000010b4 <debugBlinkColor>:
 
 void debugBlinkBlue(void){
 	debugBlinkColor(blue);
 }
 
 void debugBlinkColor(const rgb c){
-    10c2:	6f 92       	push	r6
-    10c4:	7f 92       	push	r7
-    10c6:	8f 92       	push	r8
-    10c8:	cf 92       	push	r12
-    10ca:	df 92       	push	r13
-    10cc:	ef 92       	push	r14
-    10ce:	cf 93       	push	r28
-    10d0:	6b 01       	movw	r12, r22
-    10d2:	e8 2e       	mov	r14, r24
+    10b4:	6f 92       	push	r6
+    10b6:	7f 92       	push	r7
+    10b8:	8f 92       	push	r8
+    10ba:	cf 92       	push	r12
+    10bc:	df 92       	push	r13
+    10be:	ef 92       	push	r14
+    10c0:	cf 93       	push	r28
+    10c2:	6b 01       	movw	r12, r22
+    10c4:	e8 2e       	mov	r14, r24
 	uint8_t i=4;
 	while (i--) {
-    10d4:	c5 e0       	ldi	r28, 0x05	; 5
+    10c6:	c5 e0       	ldi	r28, 0x05	; 5
 		sendColor(LEDCLK, LEDDAT, c);
 		_delay_ms(100);
 		sendColor(LEDCLK, LEDDAT, black);
-    10d6:	60 90 75 00 	lds	r6, 0x0075
-    10da:	70 90 76 00 	lds	r7, 0x0076
-    10de:	80 90 77 00 	lds	r8, 0x0077
-    10e2:	c1 50       	subi	r28, 0x01	; 1
+    10c8:	60 90 75 00 	lds	r6, 0x0075
+    10cc:	70 90 76 00 	lds	r7, 0x0076
+    10d0:	80 90 77 00 	lds	r8, 0x0077
+    10d4:	c1 50       	subi	r28, 0x01	; 1
 	debugBlinkColor(blue);
 }
 
 void debugBlinkColor(const rgb c){
 	uint8_t i=4;
 	while (i--) {
-    10e4:	d9 f0       	breq	.+54     	; 0x111c <debugBlinkColor+0x5a>
+    10d6:	d9 f0       	breq	.+54     	; 0x110e <debugBlinkColor+0x5a>
 		sendColor(LEDCLK, LEDDAT, c);
-    10e6:	4e 2d       	mov	r20, r14
-    10e8:	96 01       	movw	r18, r12
-    10ea:	62 e0       	ldi	r22, 0x02	; 2
-    10ec:	70 e0       	ldi	r23, 0x00	; 0
-    10ee:	81 e0       	ldi	r24, 0x01	; 1
-    10f0:	90 e0       	ldi	r25, 0x00	; 0
-    10f2:	c6 df       	rcall	.-116    	; 0x1080 <sendColor>
+    10d8:	4e 2d       	mov	r20, r14
+    10da:	96 01       	movw	r18, r12
+    10dc:	62 e0       	ldi	r22, 0x02	; 2
+    10de:	70 e0       	ldi	r23, 0x00	; 0
+    10e0:	81 e0       	ldi	r24, 0x01	; 1
+    10e2:	90 e0       	ldi	r25, 0x00	; 0
+    10e4:	c6 df       	rcall	.-116    	; 0x1072 <sendColor>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-    10f4:	87 ea       	ldi	r24, 0xA7	; 167
-    10f6:	91 e6       	ldi	r25, 0x61	; 97
-    10f8:	01 97       	sbiw	r24, 0x01	; 1
-    10fa:	f1 f7       	brne	.-4      	; 0x10f8 <debugBlinkColor+0x36>
-    10fc:	00 c0       	rjmp	.+0      	; 0x10fe <debugBlinkColor+0x3c>
-    10fe:	00 00       	nop
+    10e6:	87 ea       	ldi	r24, 0xA7	; 167
+    10e8:	91 e6       	ldi	r25, 0x61	; 97
+    10ea:	01 97       	sbiw	r24, 0x01	; 1
+    10ec:	f1 f7       	brne	.-4      	; 0x10ea <debugBlinkColor+0x36>
+    10ee:	00 c0       	rjmp	.+0      	; 0x10f0 <debugBlinkColor+0x3c>
+    10f0:	00 00       	nop
 		_delay_ms(100);
 		sendColor(LEDCLK, LEDDAT, black);
-    1100:	48 2d       	mov	r20, r8
-    1102:	93 01       	movw	r18, r6
-    1104:	62 e0       	ldi	r22, 0x02	; 2
-    1106:	70 e0       	ldi	r23, 0x00	; 0
-    1108:	81 e0       	ldi	r24, 0x01	; 1
-    110a:	90 e0       	ldi	r25, 0x00	; 0
-    110c:	b9 df       	rcall	.-142    	; 0x1080 <sendColor>
-    110e:	87 ea       	ldi	r24, 0xA7	; 167
-    1110:	91 e6       	ldi	r25, 0x61	; 97
-    1112:	01 97       	sbiw	r24, 0x01	; 1
-    1114:	f1 f7       	brne	.-4      	; 0x1112 <debugBlinkColor+0x50>
-    1116:	00 c0       	rjmp	.+0      	; 0x1118 <debugBlinkColor+0x56>
-    1118:	00 00       	nop
-    111a:	e3 cf       	rjmp	.-58     	; 0x10e2 <debugBlinkColor+0x20>
+    10f2:	48 2d       	mov	r20, r8
+    10f4:	93 01       	movw	r18, r6
+    10f6:	62 e0       	ldi	r22, 0x02	; 2
+    10f8:	70 e0       	ldi	r23, 0x00	; 0
+    10fa:	81 e0       	ldi	r24, 0x01	; 1
+    10fc:	90 e0       	ldi	r25, 0x00	; 0
+    10fe:	b9 df       	rcall	.-142    	; 0x1072 <sendColor>
+    1100:	87 ea       	ldi	r24, 0xA7	; 167
+    1102:	91 e6       	ldi	r25, 0x61	; 97
+    1104:	01 97       	sbiw	r24, 0x01	; 1
+    1106:	f1 f7       	brne	.-4      	; 0x1104 <debugBlinkColor+0x50>
+    1108:	00 c0       	rjmp	.+0      	; 0x110a <debugBlinkColor+0x56>
+    110a:	00 00       	nop
+    110c:	e3 cf       	rjmp	.-58     	; 0x10d4 <debugBlinkColor+0x20>
 		_delay_ms(100);	
 	}
-    111c:	cf 91       	pop	r28
-    111e:	ef 90       	pop	r14
-    1120:	df 90       	pop	r13
-    1122:	cf 90       	pop	r12
-    1124:	8f 90       	pop	r8
-    1126:	7f 90       	pop	r7
-    1128:	6f 90       	pop	r6
-    112a:	08 95       	ret
+    110e:	cf 91       	pop	r28
+    1110:	ef 90       	pop	r14
+    1112:	df 90       	pop	r13
+    1114:	cf 90       	pop	r12
+    1116:	8f 90       	pop	r8
+    1118:	7f 90       	pop	r7
+    111a:	6f 90       	pop	r6
+    111c:	08 95       	ret
 
-0000112c <debugBlinkRed>:
+0000111e <debugBlinkRed>:
 #include "color.h"
 #include "Pins.h"
 #include "avr/delay.h"
 
 void debugBlinkRed(void){
 	debugBlinkColor(red);
-    112c:	60 91 7e 00 	lds	r22, 0x007E
-    1130:	70 91 7f 00 	lds	r23, 0x007F
-    1134:	80 91 80 00 	lds	r24, 0x0080
-    1138:	c4 cf       	rjmp	.-120    	; 0x10c2 <debugBlinkColor>
+    111e:	60 91 7e 00 	lds	r22, 0x007E
+    1122:	70 91 7f 00 	lds	r23, 0x007F
+    1126:	80 91 80 00 	lds	r24, 0x0080
+    112a:	c4 cf       	rjmp	.-120    	; 0x10b4 <debugBlinkColor>
 
-0000113a <debugBlinkGreen>:
+0000112c <debugBlinkGreen>:
 }
 
 void debugBlinkGreen(void){
 	debugBlinkColor(green);
-    113a:	60 91 7b 00 	lds	r22, 0x007B
-    113e:	70 91 7c 00 	lds	r23, 0x007C
-    1142:	80 91 7d 00 	lds	r24, 0x007D
-    1146:	bd cf       	rjmp	.-134    	; 0x10c2 <debugBlinkColor>
+    112c:	60 91 7b 00 	lds	r22, 0x007B
+    1130:	70 91 7c 00 	lds	r23, 0x007C
+    1134:	80 91 7d 00 	lds	r24, 0x007D
+    1138:	bd cf       	rjmp	.-134    	; 0x10b4 <debugBlinkColor>
 
-00001148 <debugBlinkBlue>:
+0000113a <debugBlinkBlue>:
 }
 
 void debugBlinkBlue(void){
 	debugBlinkColor(blue);
-    1148:	60 91 78 00 	lds	r22, 0x0078
-    114c:	70 91 79 00 	lds	r23, 0x0079
-    1150:	80 91 7a 00 	lds	r24, 0x007A
-    1154:	b6 cf       	rjmp	.-148    	; 0x10c2 <debugBlinkColor>
+    113a:	60 91 78 00 	lds	r22, 0x0078
+    113e:	70 91 79 00 	lds	r23, 0x0079
+    1142:	80 91 7a 00 	lds	r24, 0x007A
+    1146:	b6 cf       	rjmp	.-148    	; 0x10b4 <debugBlinkColor>
 
-00001156 <__mulhi3>:
-    1156:	00 24       	eor	r0, r0
-    1158:	55 27       	eor	r21, r21
-    115a:	04 c0       	rjmp	.+8      	; 0x1164 <__mulhi3+0xe>
-    115c:	08 0e       	add	r0, r24
-    115e:	59 1f       	adc	r21, r25
-    1160:	88 0f       	add	r24, r24
-    1162:	99 1f       	adc	r25, r25
-    1164:	00 97       	sbiw	r24, 0x00	; 0
-    1166:	29 f0       	breq	.+10     	; 0x1172 <__mulhi3+0x1c>
-    1168:	76 95       	lsr	r23
-    116a:	67 95       	ror	r22
-    116c:	b8 f3       	brcs	.-18     	; 0x115c <__mulhi3+0x6>
-    116e:	71 05       	cpc	r23, r1
-    1170:	b9 f7       	brne	.-18     	; 0x1160 <__mulhi3+0xa>
-    1172:	80 2d       	mov	r24, r0
-    1174:	95 2f       	mov	r25, r21
-    1176:	08 95       	ret
+00001148 <__mulhi3>:
+    1148:	00 24       	eor	r0, r0
+    114a:	55 27       	eor	r21, r21
+    114c:	04 c0       	rjmp	.+8      	; 0x1156 <__mulhi3+0xe>
+    114e:	08 0e       	add	r0, r24
+    1150:	59 1f       	adc	r21, r25
+    1152:	88 0f       	add	r24, r24
+    1154:	99 1f       	adc	r25, r25
+    1156:	00 97       	sbiw	r24, 0x00	; 0
+    1158:	29 f0       	breq	.+10     	; 0x1164 <__mulhi3+0x1c>
+    115a:	76 95       	lsr	r23
+    115c:	67 95       	ror	r22
+    115e:	b8 f3       	brcs	.-18     	; 0x114e <__mulhi3+0x6>
+    1160:	71 05       	cpc	r23, r1
+    1162:	b9 f7       	brne	.-18     	; 0x1152 <__mulhi3+0xa>
+    1164:	80 2d       	mov	r24, r0
+    1166:	95 2f       	mov	r25, r21
+    1168:	08 95       	ret
 
-00001178 <__udivmodqi4>:
-    1178:	99 1b       	sub	r25, r25
-    117a:	79 e0       	ldi	r23, 0x09	; 9
-    117c:	04 c0       	rjmp	.+8      	; 0x1186 <__udivmodqi4_ep>
+0000116a <__udivmodqi4>:
+    116a:	99 1b       	sub	r25, r25
+    116c:	79 e0       	ldi	r23, 0x09	; 9
+    116e:	04 c0       	rjmp	.+8      	; 0x1178 <__udivmodqi4_ep>
 
-0000117e <__udivmodqi4_loop>:
-    117e:	99 1f       	adc	r25, r25
-    1180:	96 17       	cp	r25, r22
-    1182:	08 f0       	brcs	.+2      	; 0x1186 <__udivmodqi4_ep>
-    1184:	96 1b       	sub	r25, r22
+00001170 <__udivmodqi4_loop>:
+    1170:	99 1f       	adc	r25, r25
+    1172:	96 17       	cp	r25, r22
+    1174:	08 f0       	brcs	.+2      	; 0x1178 <__udivmodqi4_ep>
+    1176:	96 1b       	sub	r25, r22
 
-00001186 <__udivmodqi4_ep>:
-    1186:	88 1f       	adc	r24, r24
-    1188:	7a 95       	dec	r23
-    118a:	c9 f7       	brne	.-14     	; 0x117e <__udivmodqi4_loop>
-    118c:	80 95       	com	r24
-    118e:	08 95       	ret
+00001178 <__udivmodqi4_ep>:
+    1178:	88 1f       	adc	r24, r24
+    117a:	7a 95       	dec	r23
+    117c:	c9 f7       	brne	.-14     	; 0x1170 <__udivmodqi4_loop>
+    117e:	80 95       	com	r24
+    1180:	08 95       	ret
 
-00001190 <__udivmodhi4>:
-    1190:	aa 1b       	sub	r26, r26
-    1192:	bb 1b       	sub	r27, r27
-    1194:	51 e1       	ldi	r21, 0x11	; 17
-    1196:	07 c0       	rjmp	.+14     	; 0x11a6 <__udivmodhi4_ep>
+00001182 <__udivmodhi4>:
+    1182:	aa 1b       	sub	r26, r26
+    1184:	bb 1b       	sub	r27, r27
+    1186:	51 e1       	ldi	r21, 0x11	; 17
+    1188:	07 c0       	rjmp	.+14     	; 0x1198 <__udivmodhi4_ep>
 
-00001198 <__udivmodhi4_loop>:
-    1198:	aa 1f       	adc	r26, r26
-    119a:	bb 1f       	adc	r27, r27
-    119c:	a6 17       	cp	r26, r22
-    119e:	b7 07       	cpc	r27, r23
-    11a0:	10 f0       	brcs	.+4      	; 0x11a6 <__udivmodhi4_ep>
-    11a2:	a6 1b       	sub	r26, r22
-    11a4:	b7 0b       	sbc	r27, r23
+0000118a <__udivmodhi4_loop>:
+    118a:	aa 1f       	adc	r26, r26
+    118c:	bb 1f       	adc	r27, r27
+    118e:	a6 17       	cp	r26, r22
+    1190:	b7 07       	cpc	r27, r23
+    1192:	10 f0       	brcs	.+4      	; 0x1198 <__udivmodhi4_ep>
+    1194:	a6 1b       	sub	r26, r22
+    1196:	b7 0b       	sbc	r27, r23
 
-000011a6 <__udivmodhi4_ep>:
-    11a6:	88 1f       	adc	r24, r24
-    11a8:	99 1f       	adc	r25, r25
-    11aa:	5a 95       	dec	r21
-    11ac:	a9 f7       	brne	.-22     	; 0x1198 <__udivmodhi4_loop>
-    11ae:	80 95       	com	r24
-    11b0:	90 95       	com	r25
-    11b2:	bc 01       	movw	r22, r24
-    11b4:	cd 01       	movw	r24, r26
-    11b6:	08 95       	ret
+00001198 <__udivmodhi4_ep>:
+    1198:	88 1f       	adc	r24, r24
+    119a:	99 1f       	adc	r25, r25
+    119c:	5a 95       	dec	r21
+    119e:	a9 f7       	brne	.-22     	; 0x118a <__udivmodhi4_loop>
+    11a0:	80 95       	com	r24
+    11a2:	90 95       	com	r25
+    11a4:	bc 01       	movw	r22, r24
+    11a6:	cd 01       	movw	r24, r26
+    11a8:	08 95       	ret
 
-000011b8 <__divmodhi4>:
-    11b8:	97 fb       	bst	r25, 7
-    11ba:	07 2e       	mov	r0, r23
-    11bc:	16 f4       	brtc	.+4      	; 0x11c2 <__divmodhi4+0xa>
-    11be:	00 94       	com	r0
-    11c0:	06 d0       	rcall	.+12     	; 0x11ce <__divmodhi4_neg1>
-    11c2:	77 fd       	sbrc	r23, 7
-    11c4:	08 d0       	rcall	.+16     	; 0x11d6 <__divmodhi4_neg2>
-    11c6:	e4 df       	rcall	.-56     	; 0x1190 <__udivmodhi4>
-    11c8:	07 fc       	sbrc	r0, 7
-    11ca:	05 d0       	rcall	.+10     	; 0x11d6 <__divmodhi4_neg2>
-    11cc:	3e f4       	brtc	.+14     	; 0x11dc <__divmodhi4_exit>
+000011aa <__divmodhi4>:
+    11aa:	97 fb       	bst	r25, 7
+    11ac:	07 2e       	mov	r0, r23
+    11ae:	16 f4       	brtc	.+4      	; 0x11b4 <__divmodhi4+0xa>
+    11b0:	00 94       	com	r0
+    11b2:	06 d0       	rcall	.+12     	; 0x11c0 <__divmodhi4_neg1>
+    11b4:	77 fd       	sbrc	r23, 7
+    11b6:	08 d0       	rcall	.+16     	; 0x11c8 <__divmodhi4_neg2>
+    11b8:	e4 df       	rcall	.-56     	; 0x1182 <__udivmodhi4>
+    11ba:	07 fc       	sbrc	r0, 7
+    11bc:	05 d0       	rcall	.+10     	; 0x11c8 <__divmodhi4_neg2>
+    11be:	3e f4       	brtc	.+14     	; 0x11ce <__divmodhi4_exit>
 
-000011ce <__divmodhi4_neg1>:
-    11ce:	90 95       	com	r25
-    11d0:	81 95       	neg	r24
-    11d2:	9f 4f       	sbci	r25, 0xFF	; 255
-    11d4:	08 95       	ret
+000011c0 <__divmodhi4_neg1>:
+    11c0:	90 95       	com	r25
+    11c2:	81 95       	neg	r24
+    11c4:	9f 4f       	sbci	r25, 0xFF	; 255
+    11c6:	08 95       	ret
 
-000011d6 <__divmodhi4_neg2>:
-    11d6:	70 95       	com	r23
-    11d8:	61 95       	neg	r22
-    11da:	7f 4f       	sbci	r23, 0xFF	; 255
+000011c8 <__divmodhi4_neg2>:
+    11c8:	70 95       	com	r23
+    11ca:	61 95       	neg	r22
+    11cc:	7f 4f       	sbci	r23, 0xFF	; 255
 
-000011dc <__divmodhi4_exit>:
-    11dc:	08 95       	ret
+000011ce <__divmodhi4_exit>:
+    11ce:	08 95       	ret
 
-000011de <_exit>:
-    11de:	f8 94       	cli
+000011d0 <_exit>:
+    11d0:	f8 94       	cli
 
-000011e0 <__stop_program>:
-    11e0:	ff cf       	rjmp	.-2      	; 0x11e0 <__stop_program>
+000011d2 <__stop_program>:
+    11d2:	ff cf       	rjmp	.-2      	; 0x11d2 <__stop_program>
